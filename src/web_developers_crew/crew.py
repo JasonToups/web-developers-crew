@@ -1,11 +1,6 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-
-# Uncomment the following line to use an example of a custom tool
-# from web_developers_crew.tools.custom_tool import MyCustomTool
-
-# Check our tools documentations for more information on how to use them
-from crewai_tools import SerperDevTool
+import os
 
 
 @CrewBase
@@ -16,34 +11,75 @@ class WebDevelopersCrew:
     tasks_config = "config/tasks.yaml"
 
     @agent
-    def researcher(self) -> Agent:
+    def product_manager(self) -> Agent:
         return Agent(
-            config=self.agents_config["researcher"],
-            # tools=[MyCustomTool()], # Example of custom tool, loaded on the beginning of file
+            config=self.agents_config["product_manager"],
             verbose=True,
         )
 
     @agent
-    def reporting_analyst(self) -> Agent:
-        return Agent(config=self.agents_config["reporting_analyst"], verbose=True)
+    def ui_ux_designer(self) -> Agent:
+        return Agent(
+            config=self.agents_config["ui_ux_designer"],
+            verbose=True,
+        )
 
-    @task
-    def research_task(self) -> Task:
-        return Task(
-            config=self.tasks_config["research_task"],
+    @agent
+    def frontend_engineer(self) -> Agent:
+        return Agent(
+            config=self.agents_config["frontend_engineer"],
+            verbose=True,
         )
 
     @task
-    def reporting_task(self) -> Task:
-        return Task(config=self.tasks_config["reporting_task"], output_file="report.md")
+    def product_requirements_task(self) -> Task:
+        return Task(
+            config=self.tasks_config["product_requirements_task"],
+        )
+
+    @task
+    def design_task(self) -> Task:
+        return Task(
+            config=self.tasks_config["design_task"],
+        )
+
+    @task
+    def development_task(self) -> Task:
+        task = Task(
+            config=self.tasks_config["development_task"],
+        )
+
+        # Create folder and files after development task
+        def callback(output):
+            topic = (
+                self.crew()
+                .inputs.get("topic", "landing_page")
+                .replace(" ", "_")
+                .lower()
+            )
+            folder = f"{topic}_landing_page"
+
+            if not os.path.exists(folder):
+                os.makedirs(folder)
+
+            with open(f"{folder}/index.html", "w") as f:
+                f.write(output.get("html", ""))
+            with open(f"{folder}/styles.css", "w") as f:
+                f.write(output.get("css", ""))
+            with open(f"{folder}/script.js", "w") as f:
+                f.write(output.get("js", ""))
+
+            return output
+
+        task.callback = callback
+        return task
 
     @crew
     def crew(self) -> Crew:
         """Creates the WebDevelopersCrew crew"""
         return Crew(
-            agents=self.agents,  # Automatically created by the @agent decorator
-            tasks=self.tasks,  # Automatically created by the @task decorator
+            agents=self.agents,
+            tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
-            # process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
         )
