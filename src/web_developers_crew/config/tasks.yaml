@@ -1,17 +1,30 @@
-research_task:
+product_requirements_task:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is 2024.
+    Create detailed product requirements for a landing page focused on {topic}.
+    Include sections on business goals, user needs, technical requirements, and key features.
+    Consider current web design trends and best practices.
   expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
-  agent: researcher
+    A comprehensive product requirements document (PRD) with clear specifications for the landing page,
+    including target audience, key features, technical constraints, and success metrics.
+  agent: product_manager
 
-reporting_task:
+design_task:
   description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    Based on the product requirements, create a detailed UI/UX design for the landing page.
+    Focus on creating a responsive, user-friendly layout using Bootstrap 5 components.
+    Include specifications for typography, color scheme, spacing, and interactive elements.
   expected_output: >
-    A fully fledge reports with the mains topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    A complete design specification document with wireframes, visual design elements,
+    responsive layout details, and interaction patterns. Include Bootstrap 5 component recommendations.
+  agent: ui_ux_designer
+
+development_task:
+  description: >
+    Implement the landing page design using HTML5, CSS3, JavaScript, and Bootstrap 5.
+    Ensure pixel-perfect implementation, responsive behavior, and cross-browser compatibility.
+    Create smooth animations and interactive elements as specified in the design.
+  expected_output: >
+    Production-ready HTML, CSS, and JavaScript code for the landing page,
+    with responsive layouts, optimized performance, and working interactive features.
+    Include documentation for any custom components or scripts.
+  agent: frontend_engineer
