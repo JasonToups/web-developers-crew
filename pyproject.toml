@@ -11,6 +11,7 @@ dependencies = [
 [project.scripts]
 web_developers_crew = "web_developers_crew.main:run"
 run_crew = "web_developers_crew.main:run"
+run_frontend = "web_developers_crew.main:run_frontend_only"
 train = "web_developers_crew.main:train"
 replay = "web_developers_crew.main:replay"
 test = "web_developers_crew.main:test"

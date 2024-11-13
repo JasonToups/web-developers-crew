@@ -85,3 +85,22 @@ def test():
 
     except Exception as e:
         raise Exception(f"An error occurred while replaying the crew: {e}")
+
+
+def run_frontend_only():
+    """
+    Run only the frontend development task using the UI/UX design output.
+    """
+    inputs = {"topic": TOPICS[0]}
+    crew = WebDevelopersCrew()
+
+    # Get the frontend engineer agent
+    frontend_engineer = crew.frontend_engineer()
+
+    # Get the development task
+    dev_task = crew.development_task()
+    dev_task.agent = frontend_engineer
+    dev_task.callback = crew.handle_development_output
+
+    # Execute just the frontend task
+    dev_task.execute_sync(frontend_engineer)
