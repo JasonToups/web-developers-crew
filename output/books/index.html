@@ -1,68 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Books Landing Page</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header class="hero">
-        <div class="container">
-            <img src="book.jpg" alt="Book">
-            <h1>Explore the World of Books</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <button>Shop Now</button>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Navigation Menu -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      [Brand Logo]
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            [Home]
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              >Books</a
+            >
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#">Fiction</a></li>
+              <li><a class="dropdown-item" href="#">Non-Fiction</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Hero Section -->
+    <section id="hero">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 mt-5">
+            <h1 class="display-3">The Ultimate Guide to Book Buying</h1>
+            <p class="lead">Get the best deals on books from the top publishers</p>
+            <button type="button" class="btn btn-primary">Shop Now!</button>
+          </div>
         </div>
-    </header>
-    <section class="products">
-        <div class="container">
-            <h2>Featured Products</h2>
-            <div class="product-carousel owl-carousel">
-                <!-- Product 1 -->
-                <div class="card">
-                    <img src="book-1.jpg" alt="Book">
-                    <h3>Harry Potter and the Philosopher's Stone</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                </div>
-                <!-- Product 2 -->
-                <div class="card">
-                    <img src="book-2.jpg" alt="Book">
-                    <h3>The Alchemist</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                </div>
-                <!-- Product 3 -->
-                <div class="card">
-                    <img src="book-3.jpg" alt="Book">
-                    <h3>The Little Prince</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                </div>
-            </div>
-        </div>
+      </div>
     </section>
-    <section class="filters">
-        <div class="container">
-            <h2>Filters</h2>
-            <form action="#" method="get">
-                <label for="genre">Genre:</label>
-                <select name="genre" id="genre">
-                    <option value="fiction">Fiction</option>
-                    <option value="non-fiction">Non-Fiction</option>
-                </select>
-                <br><br>
-                <label for="author">Author:</label>
-                <input type="text" name="author" id="author"><br><br>
-                <button type="submit">Filter</button>
-            </form>
+    <!-- Features Section -->
+    <section id="features">
+      <div class="container">
+        <h2 class="text-center mb-5">Our Features</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <img src="images/feature1.jpg" alt="" />
+            <h3>Best Prices</h3>
+            <p>Get the best deals on books from the top publishers</p>
+          </div>
+          <div class="col-md-4">
+            <img src="images/feature2.jpg" alt="" />
+            <h3>Easy Navigation</h3>
+            <p>Find what you're looking for quickly and easily</p>
+          </div>
+          <div class="col-md-4">
+            <img src="images/feature3.jpg" alt="" />
+            <h3>User-Friendly Checkout</h3>
+            <p>Pay securely and quickly with our easy checkout process</p>
+          </div>
         </div>
+      </div>
     </section>
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2023 Books Landing Page</p>
+    <!-- Book Categories Section -->
+    <section id="book-categories">
+      <div class="container">
+        <h2 class="text-center mb-5">Book Categories</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <img src="images/category1.jpg" alt="" />
+            <h3>Fiction</h3>
+            <p>Explore our vast selection of fiction books</p>
+          </div>
+          <div class="col-md-4">
+            <img src="images/category2.jpg" alt="" />
+            <h3>Non-Fiction</h3>
+            <p>Discover a wide range of non-fiction books</p>
+          </div>
         </div>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-dark text-white">
+      <div class="container py-5">
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="text-uppercase mb-4">Books Landing Page</h4>
+            <p>Get the best deals on books from the top publishers</p>
+          </div>
+          <div class="col-md-6 text-end">
+            <h4 class="text-uppercase mb-4">Contact Us</h4>
+            <a href="#" class="text-decoration-none"
+              ><i class="bi bi-envelope"></i>info@booklandingpage.com</a
+            >
+          </div>
+        </div>
+      </div>
     </footer>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="owl.carousel.min.js"></script>
-    <script src="script.js"></script>
-</body>
+  </body>
 </html>
