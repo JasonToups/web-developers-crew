@@ -19,12 +19,20 @@ design_task:
   agent: ui_ux_designer
 
 development_task:
-  description: >
-    Implement the landing page design using HTML5, CSS3, JavaScript, and Bootstrap 5.
-    Ensure pixel-perfect implementation, responsive behavior, and cross-browser compatibility.
-    Create smooth animations and interactive elements as specified in the design.
-  expected_output: >
-    Production-ready HTML, CSS, and JavaScript code for the landing page,
-    with responsive layouts, optimized performance, and working interactive features.
-    Include documentation for any custom components or scripts.
+  description: |
+    As a frontend engineer, develop the landing page based on the provided design and requirements.
+    
+    Your output MUST be formatted with clear section markers as follows:
+    
+    HTML:
+    [Your HTML code here]
+    
+    CSS:
+    [Your CSS code here]
+    
+    JS:
+    [Your JavaScript code here]
+    
+    Each section must contain valid, well-formatted code that follows best practices and implements the design requirements.
+  expected_output: "A complete landing page implementation with HTML, CSS, and JavaScript code, properly formatted with section markers."
   agent: frontend_engineer

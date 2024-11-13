@@ -10,6 +10,9 @@ class WebDevelopersCrew:
     agents_config = "config/agents.yaml"
     tasks_config = "config/tasks.yaml"
 
+    def __init__(self):
+        self.inputs = None
+
     @agent
     def product_manager(self) -> Agent:
         return Agent(
@@ -45,41 +48,71 @@ class WebDevelopersCrew:
 
     @task
     def development_task(self) -> Task:
-        task = Task(
-            config=self.tasks_config["development_task"],
+        """Development task that creates the landing page"""
+        return Task(config=self.tasks_config["development_task"])
+
+    def handle_development_output(self, output):
+        """Helper method to handle the development task output"""
+        topic = (
+            self.inputs.get("topic", "landing_page") if self.inputs else "landing_page"
         )
+        output_dir = os.path.join("output", topic.lower().replace(" ", "_"))
+        os.makedirs(output_dir, exist_ok=True)
 
-        # Create folder and files after development task
-        def callback(output):
-            topic = (
-                self.crew()
-                .inputs.get("topic", "landing_page")
-                .replace(" ", "_")
-                .lower()
-            )
-            folder = f"{topic}_landing_page"
+        sections = output.split("\n")
+        current_section = None
+        html = []
+        css = []
+        js = []
 
-            if not os.path.exists(folder):
-                os.makedirs(folder)
+        for line in sections:
+            if "HTML:" in line:
+                current_section = "html"
+            elif "CSS:" in line:
+                current_section = "css"
+            elif "JS:" in line:
+                current_section = "js"
+            elif current_section == "html":
+                html.append(line)
+            elif current_section == "css":
+                css.append(line)
+            elif current_section == "js":
+                js.append(line)
 
-            with open(f"{folder}/index.html", "w") as f:
-                f.write(output.get("html", ""))
-            with open(f"{folder}/styles.css", "w") as f:
-                f.write(output.get("css", ""))
-            with open(f"{folder}/script.js", "w") as f:
-                f.write(output.get("js", ""))
+        with open(os.path.join(output_dir, "index.html"), "w") as f:
+            f.write("\n".join(html))
+        with open(os.path.join(output_dir, "styles.css"), "w") as f:
+            f.write("\n".join(css))
+        with open(os.path.join(output_dir, "script.js"), "w") as f:
+            f.write("\n".join(js))
 
-            return output
-
-        task.callback = callback
-        return task
+        return output
 
     @crew
     def crew(self) -> Crew:
         """Creates the WebDevelopersCrew crew"""
+
+        def process_inputs(inputs):
+            self.inputs = inputs
+
+        # Get the development task - modify how we find the task
+        dev_task = None
+        for task in self.tasks:
+            if (
+                isinstance(task, Task)
+                and task.description
+                and "frontend engineer" in task.description.lower()
+            ):
+                dev_task = task
+                break
+
+        if dev_task:
+            dev_task.callback = self.handle_development_output
+
         return Crew(
             agents=self.agents,
             tasks=self.tasks,
             process=Process.sequential,
+            process_inputs=process_inputs,
             verbose=True,
         )
