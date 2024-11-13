@@ -1,59 +1,47 @@
-* {
-    box-sizing: border-box;
+/* Hero Section */
+.hero {
+  background-color: #f4f7fa;
 }
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+.hero .container {
+  padding-top: 10rem;
+  padding-bottom: 10rem;
 }
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+.hero .row {
+  align-items: center;
 }
-header.hero {
-    background: #f7f7f7;
-    padding: 5rem;
+.hero .col-md-6 {
+  margin-bottom: 2rem;
 }
-header.hero h1, header.hero p {
-    text-align: center;
+/* Features Section */
+.features {
+  background-color: #f4f7fa;
 }
-header.hero button {
-    margin-top: 2rem;
-    background: #333;
-    color: #fff;
-    padding: 1rem 2rem;
-    border: none;
-    cursor: pointer;
+.features .container {
+  padding-top: 10rem;
+  padding-bottom: 10rem;
 }
-section.products {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
+.features .row {
+  justify-content: center;
 }
-section.products .product-carousel {
-    margin-top: 2rem;
+/* Testimonials Section */
+.testimonials {
+  background-color: #f4f7fa;
 }
-section.filters {
-    background: #f7f7f7;
-    padding: 5rem;
+.testimonials .container {
+  padding-top: 10rem;
+  padding-bottom: 10rem;
 }
-section.filters form label, section.filters form input[type="text"] {
-    display: block;
-    margin-bottom: 1rem;
+.testimonials .row {
+  justify-content: center;
 }
-section.filters form button[type="submit"] {
-    background: #333;
-    color: #fff;
-    padding: 1rem 2rem;
-    border: none;
-    cursor: pointer;
+/* Call to Action Section */
+.cta {
+  background-color: #f4f7fa;
 }
-footer.footer {
-    background: #f7f7f7;
-    padding: 5rem;
+.cta .container {
+  padding-top: 10rem;
+  padding-bottom: 10rem;
 }
-footer.footer p {
-    text-align: center;
+.cta .row {
+  justify-content: center;
 }
