@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books Landing Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="hero">
+        <div class="container">
+            <img src="book.jpg" alt="Book">
+            <h1>Explore the World of Books</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <button>Shop Now</button>
+        </div>
+    </header>
+    <section class="products">
+        <div class="container">
+            <h2>Featured Products</h2>
+            <div class="product-carousel owl-carousel">
+                <!-- Product 1 -->
+                <div class="card">
+                    <img src="book-1.jpg" alt="Book">
+                    <h3>Harry Potter and the Philosopher's Stone</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+                <!-- Product 2 -->
+                <div class="card">
+                    <img src="book-2.jpg" alt="Book">
+                    <h3>The Alchemist</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+                <!-- Product 3 -->
+                <div class="card">
+                    <img src="book-3.jpg" alt="Book">
+                    <h3>The Little Prince</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="filters">
+        <div class="container">
+            <h2>Filters</h2>
+            <form action="#" method="get">
+                <label for="genre">Genre:</label>
+                <select name="genre" id="genre">
+                    <option value="fiction">Fiction</option>
+                    <option value="non-fiction">Non-Fiction</option>
+                </select>
+                <br><br>
+                <label for="author">Author:</label>
+                <input type="text" name="author" id="author"><br><br>
+                <button type="submit">Filter</button>
+            </form>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2023 Books Landing Page</p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="owl.carousel.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

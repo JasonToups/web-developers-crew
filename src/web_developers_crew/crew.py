@@ -95,6 +95,23 @@ class WebDevelopersCrew:
                 elif current_section == "js":
                     js.append(line)
 
+        # Create output directory
+        output_dir = os.path.join("output", "books")
+        os.makedirs(output_dir, exist_ok=True)
+
+        # Write files
+        if html:
+            with open(os.path.join(output_dir, "index.html"), "w") as f:
+                f.write("\n".join(html))
+
+        if css:
+            with open(os.path.join(output_dir, "index.css"), "w") as f:
+                f.write("\n".join(css))
+
+        if js:
+            with open(os.path.join(output_dir, "index.js"), "w") as f:
+                f.write("\n".join(js))
+
         return {
             "html": "\n".join(html) if html else "",
             "css": "\n".join(css) if css else "",

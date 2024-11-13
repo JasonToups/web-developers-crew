@@ -97,7 +97,6 @@ JS:
 Each section must contain valid, well-formatted code that follows best practices and implements the design requirements.
 
 
-
 # Agent: Books Frontend Engineer
 ## Final Answer: 
 ```html
@@ -138,6 +137,7 @@ Each section must contain valid, well-formatted code that follows best practices
   </body>
 </html>
 ```
+
 ```css
 * {
   box-sizing: border-box;
