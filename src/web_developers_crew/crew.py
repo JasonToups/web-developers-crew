@@ -1,6 +1,7 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 import os
+from .utils.cache_manager import CacheManager
 
 
 @CrewBase
@@ -12,7 +13,25 @@ class WebDevelopersCrew:
 
     def __init__(self):
         self.inputs = None
-        self._cached_ui_design = None  # Add cache for UI design
+        self.cache_manager = None
+
+    def initialize_cache(self, topic: str):
+        self.cache_manager = CacheManager(topic)
+
+    def run_frontend_task(self, cached_design: str = None):
+        """Run the frontend development task"""
+        frontend_engineer = self.frontend_engineer()
+        dev_task = self.development_task()
+
+        # If we have cached design, include it in the task context
+        if cached_design:
+            dev_task.context = (
+                f"Using this UI/UX design:\n{cached_design}\n\n" + dev_task.context
+            )
+
+        dev_task.agent = frontend_engineer
+        dev_task.callback = self.handle_development_output
+        return dev_task.execute_sync(frontend_engineer)
 
     @agent
     def product_manager(self) -> Agent:
@@ -53,11 +72,13 @@ class WebDevelopersCrew:
         config = self.tasks_config["development_task"]
 
         # Modify task to include UI design in context
-        if self._cached_ui_design:
-            config["context"] = (
-                f"Using this UI/UX design:\n{self._cached_ui_design}\n\n"
-                + config.get("context", "")
-            )
+        if self.cache_manager:
+            cached_design = self.cache_manager.get_agent_output("ui_ux_designer")
+            if cached_design:
+                config["context"] = (
+                    f"Using this UI/UX design:\n{cached_design}\n\n"
+                    + config.get("context", "")
+                )
 
         return Task(config=config)
 
@@ -122,6 +143,9 @@ class WebDevelopersCrew:
             with open(os.path.join(output_dir, "index.js"), "w") as f:
                 f.write("\n".join(js))
 
+        if self.cache_manager:
+            self.cache_manager.cache_agent_output("frontend_engineer", str(output))
+
         return {
             "html": "\n".join(html) if html else "",
             "css": "\n".join(css) if css else "",
@@ -159,13 +183,23 @@ class WebDevelopersCrew:
 
     # Add method to get/set UI design
     def set_ui_design(self, design):
-        self._cached_ui_design = design
+        if self.cache_manager:
+            self.cache_manager.cache_agent_output("ui_ux_designer", design)
 
     def get_ui_design(self):
-        if not self._cached_ui_design:
+        if not self.cache_manager:
             # If no cached design, run UI/UX designer task
             ui_designer = self.ui_ux_designer()
             design_task = self.design_task()
             design_task.agent = ui_designer
-            self._cached_ui_design = design_task.execute_sync(ui_designer)
-        return self._cached_ui_design
+            design_task.callback = self.handle_development_output
+            self.cache_manager.cache_agent_output(
+                "ui_ux_designer", design_task.execute_sync(ui_designer)
+            )
+        return self.cache_manager.get_agent_output("ui_ux_designer")
+
+    def handle_design_output(self, output):
+        """Cache UI/UX design output"""
+        if self.cache_manager:
+            self.cache_manager.cache_agent_output("ui_ux_designer", str(output))
+        return output

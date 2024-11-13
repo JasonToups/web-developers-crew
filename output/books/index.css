@@ -1,46 +1,91 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+/* General Styles */
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
-html, body {
-    font-family: 'Open Sans', sans-serif;
-    margin: 0;
-    padding: 0;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
 }
-.site-header .navbar-brand {
-    font-size: 1rem;
-    font-weight: bold;
+h1, h2, h3, h4, h5, h6 {
+  color: #000;
+  text-align: center;
+  margin-bottom: 20px;
 }
-.site-header .navbar-toggler {
-    border: none;
-    outline: none;
+p {
+  font-size: 18px;
+  line-height: 24px;
+  text-align: justify;
+  margin-bottom: 30px;
 }
-.hero {
-    height: calc(100vh - 56px); /* 100% viewport height minus navbar height */
-    background: #f2f2f2 url('https://picsum.photos/id/237/800') no-repeat center;
-    background-size: cover;
+a {
+  color: #2196f3;
+  text-decoration: none;
 }
-.hero img {
-    object-fit: cover; /* makes the image fill the div completely */
-    border-radius: 50%;
-    box-shadow: 0px 4px 20px rgba(16, 16, 39, 0.7);
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
 }
-.hero .display-4 {
-    font-size: 3rem;
-    text-transform: uppercase;
-    color: #fff;
+/* Hero Section */
+#hero {
+  height: 60vh;
+  background-image: url('./assets/images/bg.jpg');
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.hero p {
-    font-size: 1.25rem;
-    margin-bottom: 0;
+#hero .container {
+  max-width: 700px;
+  text-align: center;
+  color: #fff;
+  padding-top: 40px;
 }
-.site-footer {
-    background: #f7f7f7;
-    padding: 3rem 0;
-    text-align: center;
+#hero h1 {
+  font-size: 36px;
+  line-height: 40px;
 }
-.site-footer .list-inline {
-    font-size: 1.25rem;
-    margin: 0 auto;
-    width: fit-content;
+#hero p {
+  font-size: 18px;
+  line-height: 24px;
+}
+/* Features Section */
+#features {
+  padding: 50px 0;
+  background-color: #f6f6f6;
+}
+#features .feature {
+  margin-bottom: 30px;
+}
+#features .number {
+  font-size: 18px;
+  color: #2196f3;
+  text-align: center;
+  line-height: 40px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+}
+#features .text {
+  padding-left: 15px;
+}
+#features h2 {
+  font-size: 36px;
+  line-height: 40px;
+}
+/* Call to Action Section */
+#cta {
+  background-color: #2196f3;
+  color: #fff;
+  padding: 50px 0;
+}
+#cta h2 {
+  font-size: 36px;
+  line-height: 40px;
+  text-align: center;
 }

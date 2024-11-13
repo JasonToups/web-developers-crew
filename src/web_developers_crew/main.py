@@ -110,10 +110,16 @@ def main():
     """
     Main entry point for the CLI
     """
+    inputs = {"topic": TOPICS[0]}
+    crew = WebDevelopersCrew()
+    crew.initialize_cache(inputs["topic"])
+
     if len(sys.argv) > 1 and sys.argv[1] == "frontend":
-        run_frontend_only()
+        # Try to get cached UI/UX design
+        cached_design = crew.cache_manager.get_agent_output("ui_ux_designer")
+        crew.run_frontend_task(cached_design)
     else:
-        run()
+        crew.crew().kickoff(inputs=inputs)
 
 
 if __name__ == "__main__":
