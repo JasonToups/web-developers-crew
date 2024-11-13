@@ -1,58 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 * {
     box-sizing: border-box;
 }
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+html, body {
+    font-family: 'Open Sans', sans-serif;
     margin: 0;
+    padding: 0;
 }
-.header {
-    background-color: #ffffff;
-    padding: 10px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.site-header .navbar-brand {
+    font-size: 1rem;
+    font-weight: bold;
 }
-.navbar a {
-    font-size: 18px;
-    color: #333;
-    padding: 6px 8px;
-    text-decoration: none;
-    border-radius: 5px;
-}
-.navbar a:hover {
-    background-color: #45a049;
-    color: #ffffff;
-}
-.main {
-    margin: 20px auto;
-    max-width: 1000px;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-h1 {
-    font-size: 36px;
-    margin: 0;
-}
-p {
-    font-size: 18px;
-    line-height: 24px;
-    margin-bottom: 15px;
-}
-ul li {
-    font-size: 18px;
-    list-style: none;
-    padding-left: 10px;
-}
-.btn {
-    background-color: #4CAF50;
-    color: #ffffff;
-    padding: 6px 12px;
+.site-header .navbar-toggler {
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
+    outline: none;
 }
-.btn:hover {
-    background-color: #45a049;
+.hero {
+    height: calc(100vh - 56px); /* 100% viewport height minus navbar height */
+    background: #f2f2f2 url('https://picsum.photos/id/237/800') no-repeat center;
+    background-size: cover;
+}
+.hero img {
+    object-fit: cover; /* makes the image fill the div completely */
+    border-radius: 50%;
+    box-shadow: 0px 4px 20px rgba(16, 16, 39, 0.7);
+}
+.hero .display-4 {
+    font-size: 3rem;
+    text-transform: uppercase;
+    color: #fff;
+}
+.hero p {
+    font-size: 1.25rem;
+    margin-bottom: 0;
+}
+.site-footer {
+    background: #f7f7f7;
+    padding: 3rem 0;
+    text-align: center;
+}
+.site-footer .list-inline {
+    font-size: 1.25rem;
+    margin: 0 auto;
+    width: fit-content;
 }
