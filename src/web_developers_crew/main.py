@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import warnings
+import os
 
 from web_developers_crew.crew import WebDevelopersCrew
 
@@ -41,11 +42,17 @@ TOPICS = [
 
 
 def run():
-    """
-    Run the crew.
-    """
-    inputs = {"topic": TOPICS[0]}
-    WebDevelopersCrew().crew().kickoff(inputs=inputs)
+    """Run the crew"""
+    inputs = {"topic": "Books"}  # Default topic
+    crew = WebDevelopersCrew()
+    crew.initialize_cache(inputs["topic"])
+
+    try:
+        result = crew.crew().kickoff(inputs=inputs)
+        return result
+    except Exception as e:
+        logger.error(f"An error occurred while running the crew: {str(e)}")
+        raise
 
 
 def train():
@@ -106,20 +113,32 @@ def run_frontend_only():
     dev_task.execute_sync(frontend_engineer)
 
 
-def main():
-    """
-    Main entry point for the CLI
-    """
-    inputs = {"topic": TOPICS[0]}
-    crew = WebDevelopersCrew()
-    crew.initialize_cache(inputs["topic"])
+def clear_cache():
+    """Clear all cached outputs"""
+    import shutil
 
-    if len(sys.argv) > 1 and sys.argv[1] == "frontend":
-        # Try to get cached UI/UX design
-        cached_design = crew.cache_manager.get_agent_output("ui_ux_designer")
-        crew.run_frontend_task(cached_design)
+    cache_dir = os.path.join("output")
+    if os.path.exists(cache_dir):
+        shutil.rmtree(cache_dir)
+        print("Cache cleared successfully")
+
+
+def main():
+    """Main entry point for the CLI"""
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "frontend":
+            inputs = {"topic": TOPICS[0]}
+            crew = WebDevelopersCrew()
+            crew.inputs = inputs
+            crew.initialize_cache(inputs["topic"])
+            cached_design = crew.cache_manager.get_agent_output("ui_ux_designer")
+            crew.run_frontend_task(cached_design)
+        elif sys.argv[1] == "clear-cache":
+            clear_cache()
+        else:
+            run()
     else:
-        crew.crew().kickoff(inputs=inputs)
+        run()
 
 
 if __name__ == "__main__":

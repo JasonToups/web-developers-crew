@@ -1,38 +1,112 @@
 product_requirements_task:
   description: >
     Create detailed product requirements for a landing page focused on {topic}.
-    Include sections on business goals, user needs, technical requirements, and key features.
-    Consider current web design trends and best practices.
+    Consider the unique aspects of {topic} and how they can be showcased innovatively.
+    
+    Include:
+    1. Business Goals & Target Audience
+       - Unique value proposition
+       - Primary and secondary user personas
+       - Key conversion metrics
+    
+    2. Content Strategy
+       - Key messaging hierarchy
+       - Content sections prioritization
+       - Unique selling points
+    
+    3. Technical Requirements
+       - Performance benchmarks
+       - SEO requirements
+       - Integration needs
+    
+    4. Differentiation Strategy
+       - Competitor analysis
+       - Unique features/approaches
+       - Brand personality elements
   expected_output: >
-    A comprehensive product requirements document (PRD) with clear specifications for the landing page,
-    including target audience, key features, technical constraints, and success metrics.
+    A comprehensive PRD that emphasizes unique aspects of {topic}, including innovative
+    approaches to showcase the content while maintaining usability and conversion focus.
   agent: product_manager
 
 design_task:
   description: >
-    Based on the product requirements, create a detailed UI/UX design for the landing page.
-    Focus on creating a responsive, user-friendly layout using Bootstrap 5 components.
-    Include specifications for typography, color scheme, spacing, and interactive elements.
+    Create an innovative UI/UX design for the {topic} landing page that stands out
+    while leveraging Bootstrap 5's capabilities. Focus on creating a unique visual
+    identity that differentiates this landing page from common templates.
+
+    Design Requirements:
+    1. Layout Innovation
+       - Experiment with unique grid layouts using Bootstrap's grid system
+       - Create distinctive section arrangements
+       - Design creative hero section variations
+       - Implement unique scroll patterns or transitions
+    
+    2. Visual Hierarchy
+       - Develop a distinctive typography system
+       - Create unique color combinations within brand guidelines
+       - Design custom component variations using Bootstrap base components
+       - Implement creative use of white space
+    
+    3. Responsive Considerations
+       - Design unique mobile-first interactions
+       - Create distinctive tablet layouts (not just scaled versions)
+       - Implement creative navigation patterns
+       - Design unique content stacking for different breakpoints
+    
+    4. Component Innovation
+       - Customize Bootstrap components with unique styling
+       - Create distinctive hover/focus states
+       - Design creative card layouts and list groups
+       - Implement unique form styles
+    
+    5. Interactive Elements
+       - Design creative micro-interactions
+       - Plan unique scroll-based animations
+       - Create distinctive call-to-action patterns
+       - Implement innovative loading states
   expected_output: >
-    A complete design specification document with wireframes, visual design elements,
-    responsive layout details, and interaction patterns. Include Bootstrap 5 component recommendations.
+    A detailed design specification that pushes creative boundaries while maintaining
+    usability, including unique layout patterns, custom component designs, and
+    innovative responsive solutions using Bootstrap's framework.
   agent: ui_ux_designer
 
 development_task:
   description: |
-    As a frontend engineer, develop the landing page based on the provided design and requirements.
-    
+    As a frontend engineer, implement the unique design for the {topic} landing page,
+    focusing on both creativity and maintainability. Transform Bootstrap components
+    into distinctive UI elements while maintaining responsive behavior.
+
+    Implementation Requirements:
+    1. Unique Bootstrap Customization
+       - Extend Bootstrap's base classes creatively
+       - Implement custom utility classes
+       - Create unique component variations
+       - Design distinctive responsive patterns
+
+    2. Creative Layout Implementation
+       - Use Bootstrap's grid system in innovative ways
+       - Implement unique responsive breakpoints
+       - Create custom container variations
+       - Design distinctive section transitions
+
+    3. Performance Optimization
+       - Implement lazy loading strategies
+       - Optimize animation performance
+       - Minimize CSS specificity conflicts
+       - Ensure smooth mobile performance
+
     Your output MUST be formatted with clear section markers as follows:
-    
+
     HTML:
-    [Your HTML code here]
-    
+    [Your HTML content here - focus on semantic structure and creative component usage]
+
     CSS:
-    [Your CSS code here]
-    
+    [Your CSS code here - include unique Bootstrap customizations and animations]
+
     JS:
-    [Your JavaScript code here]
-    
-    Each section must contain valid, well-formatted code that follows best practices and implements the design requirements.
-  expected_output: "A complete landing page implementation with HTML, CSS, and JavaScript code, properly formatted with section markers."
+    [Your JavaScript code here - implement creative interactions and optimizations]
+
+    Each section must contain valid, well-formatted code that creates a unique user
+    experience while maintaining Bootstrap's responsive features and accessibility.
+  expected_output: "A complete, unique landing page implementation that extends Bootstrap's capabilities in creative ways while maintaining performance and accessibility."
   agent: frontend_engineer
