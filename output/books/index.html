@@ -1,118 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Books Landing Page</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <!-- Navigation Menu -->
-    <nav class="navbar navbar-expand-lg navbar-light">
-      [Brand Logo]
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            [Home]
-          </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              >Books</a
-            >
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Fiction</a></li>
-              <li><a class="dropdown-item" href="#">Non-Fiction</a></li>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+        </nav>
+    </header>
+    <main class="container">
+        <section id="home" class="section">
+            <h1>Welcome to our website!</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit.</p>
+            <a href="#about" class="btn">Learn More</a>
+        </section>
+        <section id="about" class="section">
+            <h1>About Us</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit.</p>
+            <a href="#features" class="btn">Learn More</a>
+        </section>
+        <section id="features" class="section">
+            <h1>Features</h1>
+            <ul>
+                <li>Feature 1</li>
+                <li>Feature 2</li>
+                <li>Feature 3</li>
             </ul>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <!-- Hero Section -->
-    <section id="hero">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 mt-5">
-            <h1 class="display-3">The Ultimate Guide to Book Buying</h1>
-            <p class="lead">Get the best deals on books from the top publishers</p>
-            <button type="button" class="btn btn-primary">Shop Now!</button>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Features Section -->
-    <section id="features">
-      <div class="container">
-        <h2 class="text-center mb-5">Our Features</h2>
-        <div class="row">
-          <div class="col-md-4">
-            <img src="images/feature1.jpg" alt="" />
-            <h3>Best Prices</h3>
-            <p>Get the best deals on books from the top publishers</p>
-          </div>
-          <div class="col-md-4">
-            <img src="images/feature2.jpg" alt="" />
-            <h3>Easy Navigation</h3>
-            <p>Find what you're looking for quickly and easily</p>
-          </div>
-          <div class="col-md-4">
-            <img src="images/feature3.jpg" alt="" />
-            <h3>User-Friendly Checkout</h3>
-            <p>Pay securely and quickly with our easy checkout process</p>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Book Categories Section -->
-    <section id="book-categories">
-      <div class="container">
-        <h2 class="text-center mb-5">Book Categories</h2>
-        <div class="row">
-          <div class="col-md-4">
-            <img src="images/category1.jpg" alt="" />
-            <h3>Fiction</h3>
-            <p>Explore our vast selection of fiction books</p>
-          </div>
-          <div class="col-md-4">
-            <img src="images/category2.jpg" alt="" />
-            <h3>Non-Fiction</h3>
-            <p>Discover a wide range of non-fiction books</p>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Footer -->
-    <footer class="bg-dark text-white">
-      <div class="container py-5">
-        <div class="row">
-          <div class="col-md-6">
-            <h4 class="text-uppercase mb-4">Books Landing Page</h4>
-            <p>Get the best deals on books from the top publishers</p>
-          </div>
-          <div class="col-md-6 text-end">
-            <h4 class="text-uppercase mb-4">Contact Us</h4>
-            <a href="#" class="text-decoration-none"
-              ><i class="bi bi-envelope"></i>info@booklandingpage.com</a
-            >
-          </div>
-        </div>
-      </div>
+        </section>
+        <section id="pricing" class="section">
+            <h1>Pricing</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit.</p>
+            <a href="#contact" class="btn">Learn More</a>
+        </section>
+    </main>
+    <footer class="footer">
+        <nav class="navbar">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+        </nav>
     </footer>
-  </body>
+</body>
 </html>

@@ -104,3 +104,17 @@ def run_frontend_only():
 
     # Execute just the frontend task
     dev_task.execute_sync(frontend_engineer)
+
+
+def main():
+    """
+    Main entry point for the CLI
+    """
+    if len(sys.argv) > 1 and sys.argv[1] == "frontend":
+        run_frontend_only()
+    else:
+        run()
+
+
+if __name__ == "__main__":
+    main()
