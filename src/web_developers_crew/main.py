@@ -11,12 +11,40 @@ warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 # Replace with inputs you want to test with, it will automatically
 # interpolate any tasks and agents information
 
+# List of topics to create landing pages for
+TOPICS = [
+    "Books",
+    "Business",
+    "Developer Tools",
+    "Education",
+    "Entertainment",
+    "Finance",
+    "Food & Drink",
+    "Games",
+    "Graphics",
+    "Health",
+    "Lifestyle",
+    "Medical",
+    "Music",
+    "News",
+    "Other",
+    "Photo & Video",
+    "Productivity",
+    "Reference",
+    "Shopping",
+    "Social",
+    "Sports",
+    "Travel",
+    "Utilities",
+    "Weather",
+]
+
 
 def run():
     """
     Run the crew.
     """
-    inputs = {"topic": "AI LLMs"}
+    inputs = {"topic": TOPICS[0]}
     WebDevelopersCrew().crew().kickoff(inputs=inputs)
 
 
@@ -24,7 +52,7 @@ def train():
     """
     Train the crew for a given number of iterations.
     """
-    inputs = {"topic": "AI LLMs"}
+    inputs = {"topic": TOPICS[0]}
     try:
         WebDevelopersCrew().crew().train(
             n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs
@@ -49,7 +77,7 @@ def test():
     """
     Test the crew execution and returns the results.
     """
-    inputs = {"topic": "AI LLMs"}
+    inputs = {"topic": TOPICS[0]}
     try:
         WebDevelopersCrew().crew().test(
             n_iterations=int(sys.argv[1]), openai_model_name=sys.argv[2], inputs=inputs

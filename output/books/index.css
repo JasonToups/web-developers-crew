@@ -1,0 +1,59 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+header.hero {
+    background: #f7f7f7;
+    padding: 5rem;
+}
+header.hero h1, header.hero p {
+    text-align: center;
+}
+header.hero button {
+    margin-top: 2rem;
+    background: #333;
+    color: #fff;
+    padding: 1rem 2rem;
+    border: none;
+    cursor: pointer;
+}
+section.products {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+section.products .product-carousel {
+    margin-top: 2rem;
+}
+section.filters {
+    background: #f7f7f7;
+    padding: 5rem;
+}
+section.filters form label, section.filters form input[type="text"] {
+    display: block;
+    margin-bottom: 1rem;
+}
+section.filters form button[type="submit"] {
+    background: #333;
+    color: #fff;
+    padding: 1rem 2rem;
+    border: none;
+    cursor: pointer;
+}
+footer.footer {
+    background: #f7f7f7;
+    padding: 5rem;
+}
+footer.footer p {
+    text-align: center;
+}
