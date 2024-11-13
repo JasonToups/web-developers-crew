@@ -53,40 +53,53 @@ class WebDevelopersCrew:
 
     def handle_development_output(self, output):
         """Helper method to handle the development task output"""
-        topic = (
-            self.inputs.get("topic", "landing_page") if self.inputs else "landing_page"
-        )
-        output_dir = os.path.join("output", topic.lower().replace(" ", "_"))
-        os.makedirs(output_dir, exist_ok=True)
-
-        sections = output.split("\n")
-        current_section = None
         html = []
         css = []
         js = []
 
+        # Convert TaskOutput to string and split
+        output_text = str(output)
+        sections = output_text.split("\n")
+
+        current_section = None
+
+        # Look for both markdown-style and plain text markers
         for line in sections:
-            if "HTML:" in line:
+            line_lower = line.lower().strip()
+
+            # Check for section markers
+            if "html:" in line_lower or "```html" in line_lower:
                 current_section = "html"
-            elif "CSS:" in line:
+                continue
+            elif "css:" in line_lower or "```css" in line_lower:
                 current_section = "css"
-            elif "JS:" in line:
+                continue
+            elif (
+                "js:" in line_lower
+                or "javascript:" in line_lower
+                or "```js" in line_lower
+                or "```javascript" in line_lower
+            ):
                 current_section = "js"
-            elif current_section == "html":
-                html.append(line)
-            elif current_section == "css":
-                css.append(line)
-            elif current_section == "js":
-                js.append(line)
+                continue
+            elif "```" in line:
+                current_section = None
+                continue
 
-        with open(os.path.join(output_dir, "index.html"), "w") as f:
-            f.write("\n".join(html))
-        with open(os.path.join(output_dir, "styles.css"), "w") as f:
-            f.write("\n".join(css))
-        with open(os.path.join(output_dir, "script.js"), "w") as f:
-            f.write("\n".join(js))
+            # Only append non-empty lines while in a section
+            if current_section and line.strip():
+                if current_section == "html":
+                    html.append(line)
+                elif current_section == "css":
+                    css.append(line)
+                elif current_section == "js":
+                    js.append(line)
 
-        return output
+        return {
+            "html": "\n".join(html) if html else "",
+            "css": "\n".join(css) if css else "",
+            "js": "\n".join(js) if js else "",
+        }
 
     @crew
     def crew(self) -> Crew:
