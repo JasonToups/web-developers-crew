@@ -1,99 +1,18 @@
-/* Global Styles */
-* {
-    box-sizing: border-box;
-}
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
+    background-color: #f8f9fa;
 }
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+    max-width: 720px;
 }
-h1, h2, h3 {
-    font-family: Arial, sans-serif;
+.headline {
+    font-size: 3rem;
     font-weight: bold;
-}
-h1 {
-    font-size: 36px;
-}
-h2 {
-    font-size: 24px;
-}
-h3 {
-    font-size: 18px;
-}
-p, blockquote {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-}
-a {
-    text-decoration: none;
-    color: #3498db;
-}
-/* Header Styles */
-header {
-    background-color: #34495e;
-    padding: 2rem;
-}
-.bg-dark {
-    background-color: #34495e !important;
-}
-/* Hero Section Styles */
-#hero {
-    background-image: url('https://images.unsplash.com/photo-1586227035704-7a1b3d81c99c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80');
-    background-position: center;
-    background-size: cover;
-}
-/* Content Sections Styles */
-#value-proposition {
-    padding: 2rem;
-}
-#testimonial {
-    padding: 1rem;
-    border-left: 5px solid #3498db;
-}
-blockquote {
-    margin: 0;
-    padding: 1rem;
-    font-size: 16px;
-    line-height: 1.5;
-    background-color: #f7f7f7;
-}
-/* Call-to-Action Section Styles */
-#call-to-action {
-    padding: 2rem;
     text-align: center;
+    color: #495057;
 }
-form {
-    max-width: 400px;
-    margin: 1rem auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-input[type="text"], input[type="email"] {
-    padding: 1rem;
-    font-size: 16px;
-    border: none;
-    outline: none;
-    width: 100%;
-    margin-bottom: 2rem;
-}
-button[type="submit"] {
-    background-color: #3498db;
-    color: white;
-    padding: 1rem 2rem;
-    font-size: 16px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-}
-/* Footer Styles */
-footer {
-    background-color: #3498db;
-    padding: 2rem;
+.subheadline {
+    font-size: 2rem;
+    font-weight: bold;
     text-align: center;
+    color: #495057;
 }

@@ -53,9 +53,7 @@ design_task:
   description: >
     You are a UI/UX Designer for a {theme} landing page.
 
-    Create an innovative UI/UX design for the {topic} landing page that stands out
-    while leveraging Bootstrap 5's capabilities. Focus on creating a unique visual
-    identity that differentiates this landing page from common templates.
+    Create an innovative UI/UX design for the {topic} landing page that stands out while leveraging Bootstrap 5's capabilities. Focus on creating a unique visual identity that differentiates this landing page from common templates.
 
     You will reference Bootstrap v5 classes and components as much as possible.
 
@@ -129,8 +127,7 @@ design_task:
 
 development_task:
   description: >
-    As a Frontend Engineer for a {theme} landing page, you must implement the UI/UX Designer's specifications
-    using Bootstrap v5 Classes & Components. Your response must contain THREE sections of code, clearly marked:
+    As a Frontend Engineer for a {theme} landing page, you must implement the UI/UX Designer's specifications using Bootstrap v5 Classes & Components. Your response must contain THREE sections of code, clearly marked:
 
     1. HTML SECTION:
     ```html

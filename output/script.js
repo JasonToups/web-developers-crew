@@ -1,11 +1,22 @@
-// Script.js
-const header = document.querySelector('header');
-const navbarToggler = header.querySelector('.navbar-toggler');
-const navbarMenu = header.querySelector('.navbar-menu');
-const body = document.body;
-// Add event listener to the navbar toggler button
-navbarToggler.addEventListener('click', () => {
-    // Toggle class active on both the header and the menu
-    header.classList.toggle('active');
-    navbarMenu.classList.toggle('active');
-});
+// Add smooth scrolling to the landing page
+window.onscroll = function() {
+  // Get the current scroll position
+  var scrollPosition = window.pageYOffset;
+  // Calculate the distance from the top of the document for each section
+  var firstSectionTop = document.querySelector('.first-section').offsetTop;
+  var secondSectionTop = document.querySelector('.second-section').offsetTop;
+  var thirdSectionTop = document.querySelector('.third-section').offsetTop;
+  // Add smooth scrolling to each section when clicked
+  document.querySelector('.first-section a').onclick = function() {
+    window.scrollTo(0, firstSectionTop);
+    return false;
+  }
+  document.querySelector('.second-section a').onclick = function() {
+    window.scrollTo(0, secondSectionTop);
+    return false;
+  }
+  document.querySelector('.third-section a').onclick = function() {
+    window.scrollTo(0, thirdSectionTop);
+    return false;
+  }
+}
