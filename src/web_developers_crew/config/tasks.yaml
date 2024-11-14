@@ -1,51 +1,61 @@
 product_requirements_task:
   description: >
-    Create detailed product requirements for a landing page focused on {topic}.
-    Consider the unique aspects of {topic} and how they can be showcased innovatively.
+    As a Product Manager for a {theme} landing page:
     
-    Include:
-    1. Business Goals & Target Audience
-       - Unique value proposition
-       - Primary and secondary user personas
-       - Key conversion metrics
+    1. Topic Generation
+       - Generate a unique, specific topic within the {theme} category
+       - The topic should be a clear, specific title (not a placeholder)
+       - Consider current trends and market opportunities
     
-    2. Content Strategy
-       - Key messaging hierarchy
-       - Content sections prioritization
-       - Unique selling points
+    2. Landing Page Type Definition
+       - Determine the most suitable type (Blog, eCommerce, Service, etc.)
+       - Justify the choice based on topic and target audience
+       - Outline specific requirements for the chosen type
     
-    3. Technical Requirements
-       - Performance benchmarks
-       - SEO requirements
-       - Integration needs
+    3. Content Creation
+       - Write compelling headline and subheadlines
+       - Create all section content and CTAs
+       - Develop unique value propositions
+       - Write testimonials or social proof content
     
-    4. Differentiation Strategy
-       - Competitor analysis
-       - Unique features/approaches
-       - Brand personality elements
+    4. Business Strategy
+       - Define clear conversion goals
+       - Identify target audience segments
+       - Outline key performance metrics
+    
+    Your output MUST be formatted with clear section markers:
+    
+    TOPIC:
+    [Generated unique topic name]
+    
+    PAGE_TYPE:
+    [Landing page type and justification]
+    
+    CONTENT:
+    [All page content organized by sections]
+    
+    STRATEGY:
+    [Business goals and metrics]
   expected_output: >
-    A comprehensive PRD that emphasizes unique aspects of {topic}, including innovative
-    approaches to showcase the content while maintaining usability and conversion focus.
+    A comprehensive product specification including unique topic, page type,
+    complete content, and business strategy for a {theme}-focused landing page.
   agent: product_manager
 
 design_task:
   description: >
-    Create an innovative UI/UX design for the {topic} landing page that stands out
-    while leveraging Bootstrap 5's capabilities. Focus on creating a unique visual
-    identity that differentiates this landing page from common templates.
-
-    Design Requirements:
+    As a UI/UX Designer for a {theme} landing page:
+    
     1. Layout Innovation
-       - Experiment with unique grid layouts using Bootstrap's grid system
-       - Create distinctive section arrangements
-       - Design creative hero section variations
-       - Implement unique scroll patterns or transitions
+       - Design a layout that best suits the landing page format
+       - Create a distinctive hero section
+       - Implement section arrangements that support the content flow
+       - Design transitions that enhance the user journey
     
     2. Visual Hierarchy
-       - Develop a distinctive typography system
-       - Create unique color combinations within brand guidelines
-       - Design custom component variations using Bootstrap base components
-       - Implement creative use of white space
+       - Develop typography that reflects the {page_type} style
+       - Create color combinations that resonate with the topic
+       - Design components that support the content structure
+       - Use white space to enhance readability
     
     3. Responsive Considerations
        - Design unique mobile-first interactions
@@ -71,30 +81,27 @@ design_task:
   agent: ui_ux_designer
 
 development_task:
-  description: |
-    As a frontend engineer, implement the unique design for the {topic} landing page,
-    focusing on both creativity and maintainability. Transform Bootstrap components
-    into distinctive UI elements while maintaining responsive behavior.
-
-    Implementation Requirements:
+  description: >
+    As a Frontend Engineer for a {theme} landing page:
+    
     1. Unique Bootstrap Customization
-       - Extend Bootstrap's base classes creatively
-       - Implement custom utility classes
-       - Create unique component variations
-       - Design distinctive responsive patterns
-
+       - Customize components to match the requirements
+       - Implement styles that enhance the presentation
+       - Create variations that support the content structure
+       - Design patterns that reflect the landing page type
+    
     2. Creative Layout Implementation
        - Use Bootstrap's grid system in innovative ways
        - Implement unique responsive breakpoints
        - Create custom container variations
        - Design distinctive section transitions
-
+    
     3. Performance Optimization
        - Implement lazy loading strategies
        - Optimize animation performance
        - Minimize CSS specificity conflicts
        - Ensure smooth mobile performance
-
+    
     Your output MUST be formatted with clear section markers as follows:
 
     HTML:
@@ -108,5 +115,7 @@ development_task:
 
     Each section must contain valid, well-formatted code that creates a unique user
     experience while maintaining Bootstrap's responsive features and accessibility.
-  expected_output: "A complete, unique landing page implementation that extends Bootstrap's capabilities in creative ways while maintaining performance and accessibility."
+  expected_output: >
+    A complete, unique landing page implementation that extends Bootstrap's capabilities
+    in creative ways while maintaining performance and accessibility.
   agent: frontend_engineer

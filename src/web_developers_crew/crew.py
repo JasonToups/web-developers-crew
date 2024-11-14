@@ -1,9 +1,9 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 import os
+import logging
 from .utils.cache_manager import CacheManager
 from .utils.template_manager import TemplateManager
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +19,8 @@ class WebDevelopersCrew:
         self.inputs = None
         self.cache_manager = None
         self.template_manager = TemplateManager()
+        self.logger = logging.getLogger(__name__)
+        self.topic = None
 
     def initialize_cache(self, topic: str):
         self.cache_manager = CacheManager(topic)
@@ -27,7 +29,7 @@ class WebDevelopersCrew:
         """Run the frontend development task"""
         # Initialize inputs if not already set
         if self.inputs is None:
-            self.inputs = {"topic": "Books"}  # Default topic
+            self.inputs = {"theme": "Books"}  # Default theme
 
         frontend_engineer = self.frontend_engineer()
         dev_task = self.development_task()
@@ -93,86 +95,73 @@ class WebDevelopersCrew:
 
     def handle_development_output(self, output):
         """Helper method to handle the development task output"""
+        self.logger.info("Processing development output...")
         try:
-            # Ensure inputs are initialized
             if self.inputs is None:
-                self.inputs = {"topic": "Books"}
+                raise ValueError("Inputs not initialized")
 
-            html = []
-            css = []
-            js = []
+            # Sanitize theme and topic for directory names
+            theme = self.inputs["theme"].lower()
+            topic = self.inputs["topic"].lower()
 
-            # Convert TaskOutput to string and split
-            output_text = str(output)
-            sections = output_text.split("\n")
+            # Replace spaces and special chars with underscores
+            topic_dir = "".join(
+                c if c.isalnum() or c == "_" else "_" for c in topic.replace(" ", "_")
+            )
+
+            # Create output directory structure
+            output_dir = os.path.join("output", theme, topic_dir)
+            os.makedirs(output_dir, exist_ok=True)
+
+            logger.info(f"Creating output in directory: {output_dir}")
+
+            # Extract HTML, CSS, JS sections
+            sections = {"html": [], "css": [], "js": []}
 
             current_section = None
-
-            # Look for both markdown-style and plain text markers
-            for line in sections:
+            for line in str(output).split("\n"):
                 line_lower = line.lower().strip()
 
-                # Check for section markers
                 if "html:" in line_lower or "```html" in line_lower:
                     current_section = "html"
                     continue
                 elif "css:" in line_lower or "```css" in line_lower:
                     current_section = "css"
                     continue
-                elif (
-                    "js:" in line_lower
-                    or "javascript:" in line_lower
-                    or "```js" in line_lower
-                    or "```javascript" in line_lower
-                ):
+                elif "js:" in line_lower or "```javascript" in line_lower:
                     current_section = "js"
                     continue
                 elif "```" in line:
                     current_section = None
                     continue
 
-                # Only append non-empty lines while in a section
                 if current_section and line.strip():
-                    if current_section == "html":
-                        html.append(line)
-                    elif current_section == "css":
-                        css.append(line)
-                    elif current_section == "js":
-                        js.append(line)
-
-            # Process HTML with template and safe title access
-            if html:
-                title = f"{self.inputs.get('topic', 'Default')} Landing Page"
-                processed_html = self.template_manager.process_html(
-                    "\n".join(html), title=title
-                )
-            else:
-                processed_html = ""
-
-            # Create output directory
-            output_dir = os.path.join("output", "books")
-            os.makedirs(output_dir, exist_ok=True)
+                    sections[current_section].append(line)
 
             # Write files
-            if processed_html:  # Use processed HTML instead of raw HTML
+            if sections["html"]:
+                processed_html = self.template_manager.process_html(
+                    "\n".join(sections["html"]),
+                    title=f"{self.inputs['topic']} - {self.inputs['theme']} Landing Page",
+                )
                 with open(os.path.join(output_dir, "index.html"), "w") as f:
                     f.write(processed_html)
 
-            if css:
-                with open(os.path.join(output_dir, "index.css"), "w") as f:
-                    f.write("\n".join(css))
+            if sections["css"]:
+                with open(os.path.join(output_dir, "styles.css"), "w") as f:
+                    f.write("\n".join(sections["css"]))
 
-            if js:
-                with open(os.path.join(output_dir, "index.js"), "w") as f:
-                    f.write("\n".join(js))
-
-            if self.cache_manager:
-                self.cache_manager.cache_agent_output("frontend_engineer", str(output))
+            if sections["js"]:
+                with open(os.path.join(output_dir, "main.js"), "w") as f:
+                    f.write("\n".join(sections["js"]))
 
             return {
-                "html": "\n".join(html) if html else "",
-                "css": "\n".join(css) if css else "",
-                "js": "\n".join(js) if js else "",
+                "html": "\n".join(sections["html"]) if sections["html"] else "",
+                "css": "\n".join(sections["css"]) if sections["css"] else "",
+                "js": "\n".join(sections["js"]) if sections["js"] else "",
+                "theme": theme,
+                "topic": topic,
+                "output_dir": output_dir,
             }
 
         except Exception as e:
@@ -181,22 +170,92 @@ class WebDevelopersCrew:
 
     @crew
     def crew(self) -> Crew:
-        """Creates the WebDevelopersCrew crew"""
-        # Initialize default inputs if not set
-        if self.inputs is None:
-            self.inputs = {"topic": "Books"}  # Default topic
-
         def process_inputs(inputs):
-            # Merge with existing inputs or use new ones
-            self.inputs = inputs if inputs else self.inputs
+            try:
+                # Step 1: Product Manager Task
+                product_task = self.product_requirements_task()
+                product_output = product_task.execute_sync(self.product_manager())
 
-        # Get the development task
-        dev_task = self.development_task()
-        dev_task.callback = self.handle_development_output
+                # Extract topic and page type
+                output_lines = product_output.split("\n")
+                for line in output_lines:
+                    line = line.strip()
+                    if line.startswith("TOPIC:"):
+                        inputs["topic"] = line.replace("TOPIC:", "").strip().strip('"')
+                    elif line.startswith("PAGE_TYPE:"):
+                        inputs["page_type"] = (
+                            line.replace("PAGE_TYPE:", "").split("(")[0].strip()
+                        )
+
+                logger.info(f"Generated topic: {inputs['topic']}")
+                logger.info(f"Page type: {inputs['page_type']}")
+
+                # Cache product manager output
+                if self.cache_manager:
+                    self.cache_manager.cache_agent_output(
+                        "product_manager", str(product_output)
+                    )
+
+                # Step 2: Design Task
+                design_task = self.design_task()
+                design_task.description = f"""
+                As a UI/UX Designer for a {inputs['theme']} landing page:
+
+                Based on the Product Manager's requirements:
+                Topic: {inputs['topic']}
+                Page Type: {inputs['page_type']}
+
+                Full Requirements:
+                {product_output}
+
+                Create an innovative design that reflects both the theme and specific requirements
+                while maintaining a cohesive user experience.
+
+                1. Layout Innovation
+                   - Design a layout that best suits the {inputs['page_type']} format
+                   - Create a distinctive hero section that highlights "{inputs['topic']}"
+                   - Implement section arrangements that support the content flow
+                   - Design transitions that enhance the user journey
+                """
+                design_output = design_task.execute_sync(self.ui_ux_designer())
+
+                # Cache design output
+                if self.cache_manager:
+                    self.cache_manager.cache_agent_output(
+                        "ui_ux_designer", str(design_output)
+                    )
+
+                # Step 3: Development Task
+                dev_task = self.development_task()
+                dev_task.description = f"""
+                As a Frontend Engineer for a {inputs['theme']} landing page:
+
+                Project Details:
+                Topic: {inputs['topic']}
+                Page Type: {inputs['page_type']}
+
+                Design Specifications:
+                {design_output}
+
+                Implement this design using Bootstrap, ensuring responsive behavior and optimal performance.
+                """
+                return dev_task.execute_sync(self.frontend_engineer())
+
+            except Exception as e:
+                logger.error(f"Error in process_inputs: {str(e)}")
+                raise
 
         return Crew(
-            agents=self.agents,
-            tasks=self.tasks,
+            agents=[
+                self.product_manager(),
+                self.ui_ux_designer(),
+                self.frontend_engineer(),
+            ],
+            tasks=[
+                self.product_requirements_task(),
+                self.design_task(),
+                self.development_task(),
+            ],
             process=Process.sequential,
             process_inputs=process_inputs,
             verbose=True,
