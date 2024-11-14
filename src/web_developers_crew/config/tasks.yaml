@@ -30,92 +30,131 @@ product_requirements_task:
     
     PAGE_TYPE:
     [Landing page type and justification]
+
+    STRATEGY:
+    [Business goals and metrics]
     
     CONTENT:
     [All page content organized by sections]
     
-    STRATEGY:
-    [Business goals and metrics]
+   
   expected_output: >
-    A comprehensive product specification including unique topic, page type,
-    complete content, and business strategy for a {theme}-focused landing page.
+    TOPIC: [Generated unique topic name]
+    PAGE_TYPE: [Landing page type and justification]
+    STRATEGY: [Business goals and metrics]
+    CONTENT: [All page content organized by sections]
   agent: product_manager
 
 design_task:
   description: >
-    As a UI/UX Designer for a {theme} landing page:
+    You are a UI/UX Designer for a {theme} landing page.
+    Your ONLY job is to create a technical design specification.
     
-    1. Layout Innovation
-       - Design a layout that best suits the landing page format
-       - Create a distinctive hero section
-       - Implement section arrangements that support the content flow
-       - Design transitions that enhance the user journey
-    
-    2. Visual Hierarchy
-       - Develop typography that reflects the {page_type} style
-       - Create color combinations that resonate with the topic
-       - Design components that support the content structure
-       - Use white space to enhance readability
-    
-    3. Responsive Considerations
-       - Design unique mobile-first interactions
-       - Create distinctive tablet layouts (not just scaled versions)
-       - Implement creative navigation patterns
-       - Design unique content stacking for different breakpoints
-    
-    4. Component Innovation
-       - Customize Bootstrap components with unique styling
-       - Create distinctive hover/focus states
-       - Design creative card layouts and list groups
-       - Implement unique form styles
-    
-    5. Interactive Elements
-       - Design creative micro-interactions
-       - Plan unique scroll-based animations
-       - Create distinctive call-to-action patterns
-       - Implement innovative loading states
+    YOU MUST OUTPUT IN THIS EXACT ORDER WITH THESE EXACT SECTION HEADERS:
+
+    1. CONTENT:
+    [Copy all content from Product Manager's requirements, organized by section]
+
+    2. LAYOUT:
+    [Provide exact specifications for:
+    - Hero section (exact height, width, padding in pixels)
+    - Content sections (exact grid layout specifications)
+    - Navigation structure (exact positioning and spacing)
+    - Footer layout (exact measurements and structure)]
+
+    3. VISUAL_DESIGN:
+    [Provide exact specifications for:
+    - Color palette (all hex codes required)
+    - Typography (exact font sizes, weights, line heights)
+    - Component styles (exact border radius, shadows, etc.)
+    - Spacing (exact margin and padding in pixels)]
+
+    4. INTERACTIONS:
+    [Provide exact specifications for:
+    - Hover/focus states (exact color changes, transitions)
+    - Animations (exact timing, easing functions)
+    - Micro-interactions (exact behavior descriptions)
+    - Loading states (exact animation specifications)]
+
+    5. RESPONSIVE_DESIGN:
+    [Provide exact specifications for:
+    - Mobile layout (320px - 768px)
+    - Tablet layout (768px - 1024px)
+    - Desktop layout (1024px+)
+    - Breakpoint-specific features]
+
+    6. COMPONENTS:
+    [Provide exact specifications for:
+    - Navigation components (header, menu, dropdowns)
+    - Hero section components (headlines, CTAs)
+    - Content section components (cards, lists)
+    - Call-to-action components (buttons, forms)
+    - Form components (inputs, labels, validation)
+    - Footer components (links, social icons)]
+
+    IMPORTANT:
+    - ALL six sections are required
+    - Follow the exact order shown above
+    - Include ALL subsections
+    - Provide implementation-ready specifications
+    - Include exact measurements in pixels
+    - Include exact color codes
+    - Frontend Engineer needs these exact details
   expected_output: >
-    A detailed design specification that pushes creative boundaries while maintaining
-    usability, including unique layout patterns, custom component designs, and
-    innovative responsive solutions using Bootstrap's framework.
+    A complete technical design specification with ALL six sections:
+    CONTENT, LAYOUT, VISUAL_DESIGN, INTERACTIONS, RESPONSIVE_DESIGN, and COMPONENTS.
+    Each section must contain detailed, implementation-ready specifications.
   agent: ui_ux_designer
 
 development_task:
   description: >
-    As a Frontend Engineer for a {theme} landing page:
-    
-    1. Unique Bootstrap Customization
-       - Customize components to match the requirements
-       - Implement styles that enhance the presentation
-       - Create variations that support the content structure
-       - Design patterns that reflect the landing page type
-    
-    2. Creative Layout Implementation
-       - Use Bootstrap's grid system in innovative ways
-       - Implement unique responsive breakpoints
-       - Create custom container variations
-       - Design distinctive section transitions
-    
-    3. Performance Optimization
-       - Implement lazy loading strategies
-       - Optimize animation performance
-       - Minimize CSS specificity conflicts
-       - Ensure smooth mobile performance
-    
-    Your output MUST be formatted with clear section markers as follows:
+    As a Frontend Engineer for a {theme} landing page, you must implement the UI/UX Designer's specifications
+    using Bootstrap. Your response must contain THREE sections of code, clearly marked:
 
-    HTML:
-    [Your HTML content here - focus on semantic structure and creative component usage]
+    1. HTML SECTION:
+    ```html
+    <!-- Your semantic HTML code here -->
+    <!-- Include Bootstrap classes -->
+    <!-- Focus on component structure -->
+    ```
 
-    CSS:
-    [Your CSS code here - include unique Bootstrap customizations and animations]
+    2. CSS SECTION:
+    ```css
+    /* Your custom CSS code here */
+    /* Include Bootstrap overrides */
+    /* Focus on unique styling */
+    ```
 
-    JS:
-    [Your JavaScript code here - implement creative interactions and optimizations]
+    3. JS SECTION:
+    ```javascript
+    // Your JavaScript code here
+    // Include interaction logic
+    // Focus on functionality
+    ```
 
-    Each section must contain valid, well-formatted code that creates a unique user
-    experience while maintaining Bootstrap's responsive features and accessibility.
+    IMPORTANT RULES:
+    - Each section must start with the exact marker shown above
+    - Only include the relevant language in each section
+    - HTML section: Only HTML markup
+    - CSS section: Only CSS rules
+    - JS section: Only JavaScript code
+    - All code must be valid and properly formatted
+    - Use Bootstrap 5 classes and components
+    - Implement all UI/UX specifications exactly
+    - Ensure responsive behavior works
+    - Follow accessibility best practices
+
+    DO NOT:
+    - Mix languages between sections
+    - Include explanatory text
+    - Skip any of the three sections
+    - Use placeholder comments
+    - Provide partial implementations
+
   expected_output: >
-    A complete, unique landing page implementation that extends Bootstrap's capabilities
-    in creative ways while maintaining performance and accessibility.
+    Three complete code sections:
+    1. HTML section with semantic markup
+    2. CSS section with custom styles
+    3. JS section with interaction code
+    Each containing only its respective language's code.
   agent: frontend_engineer

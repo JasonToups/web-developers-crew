@@ -4,6 +4,8 @@ import os
 import logging
 from .utils.cache_manager import CacheManager
 from .utils.template_manager import TemplateManager
+import yaml
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -16,6 +18,15 @@ class WebDevelopersCrew:
     tasks_config = "config/tasks.yaml"
 
     def __init__(self):
+        # Load config files
+        config_dir = Path(__file__).parent / "config"
+
+        with open(config_dir / "tasks.yaml", "r") as f:
+            self.tasks_config = yaml.safe_load(f)
+
+        with open(config_dir / "agents.yaml", "r") as f:
+            self.agents_config = yaml.safe_load(f)
+
         self.inputs = None
         self.cache_manager = None
         self.template_manager = TemplateManager()
@@ -23,7 +34,13 @@ class WebDevelopersCrew:
         self.topic = None
 
     def initialize_cache(self, topic: str):
+        """Initialize cache with topic"""
+        if not self.inputs:
+            logger.warning("Inputs not set before cache initialization")
+            self.inputs = {"theme": topic}
+
         self.cache_manager = CacheManager(topic)
+        logger.info(f"Cache initialized for topic: {topic}")
 
     def run_frontend_task(self, cached_design: str = None):
         """Run the frontend development task"""
@@ -67,42 +84,53 @@ class WebDevelopersCrew:
 
     @task
     def product_requirements_task(self) -> Task:
+        """Create the product requirements task"""
+        task_config = self.tasks_config["product_requirements_task"]
         return Task(
-            config=self.tasks_config["product_requirements_task"],
+            description=task_config["description"],
+            expected_output=task_config["expected_output"],
+            agent=self.product_manager(),
         )
 
     @task
     def design_task(self) -> Task:
+        """Create the design task"""
+        task_config = self.tasks_config["design_task"]
         return Task(
-            config=self.tasks_config["design_task"],
+            description=task_config["description"],
+            expected_output=task_config["expected_output"],
+            agent=self.ui_ux_designer(),
         )
 
     @task
     def development_task(self) -> Task:
-        """Development task that creates the landing page"""
-        config = self.tasks_config["development_task"]
-
-        # Modify task to include UI design in context
-        if self.cache_manager:
-            cached_design = self.cache_manager.get_agent_output("ui_ux_designer")
-            if cached_design:
-                config["context"] = (
-                    f"Using this UI/UX design:\n{cached_design}\n\n"
-                    + config.get("context", "")
-                )
-
-        return Task(config=config)
+        """Create the development task"""
+        task_config = self.tasks_config["development_task"]
+        return Task(
+            description=task_config["description"],
+            expected_output=task_config["expected_output"],
+            agent=self.frontend_engineer(),
+        )
 
     def handle_development_output(self, output):
         """Helper method to handle the development task output"""
+        # Add debug logging at start
+        logger.debug(
+            f"Starting handle_development_output with output: {output[:100]}..."
+        )
         self.logger.info("Processing development output...")
+
         try:
             if self.inputs is None:
+                self.logger.error("Inputs not initialized")
                 raise ValueError("Inputs not initialized")
 
             # Sanitize theme and topic for directory names
             theme = self.inputs["theme"].lower()
             topic = self.inputs["topic"].lower()
+
+            # Add debug logging for inputs
+            self.logger.debug(f"Using theme: {theme}, topic: {topic}")
 
             # Replace spaces and special chars with underscores
             topic_dir = "".join(
@@ -113,23 +141,29 @@ class WebDevelopersCrew:
             output_dir = os.path.join("output", theme, topic_dir)
             os.makedirs(output_dir, exist_ok=True)
 
-            logger.info(f"Creating output in directory: {output_dir}")
+            self.logger.info(f"Creating output in directory: {output_dir}")
 
             # Extract HTML, CSS, JS sections
             sections = {"html": [], "css": [], "js": []}
-
             current_section = None
+
+            # Add debug logging for output parsing
+            self.logger.debug("Starting to parse output sections")
+
             for line in str(output).split("\n"):
                 line_lower = line.lower().strip()
 
                 if "html:" in line_lower or "```html" in line_lower:
                     current_section = "html"
+                    self.logger.debug("Found HTML section")
                     continue
                 elif "css:" in line_lower or "```css" in line_lower:
                     current_section = "css"
+                    self.logger.debug("Found CSS section")
                     continue
                 elif "js:" in line_lower or "```javascript" in line_lower:
                     current_section = "js"
+                    self.logger.debug("Found JS section")
                     continue
                 elif "```" in line:
                     current_section = None
@@ -138,23 +172,30 @@ class WebDevelopersCrew:
                 if current_section and line.strip():
                     sections[current_section].append(line)
 
-            # Write files
+            # Write files with logging
             if sections["html"]:
+                self.logger.info("Writing HTML file...")
                 processed_html = self.template_manager.process_html(
                     "\n".join(sections["html"]),
                     title=f"{self.inputs['topic']} - {self.inputs['theme']} Landing Page",
                 )
                 with open(os.path.join(output_dir, "index.html"), "w") as f:
                     f.write(processed_html)
+                self.logger.info("HTML file written successfully")
 
             if sections["css"]:
+                self.logger.info("Writing CSS file...")
                 with open(os.path.join(output_dir, "styles.css"), "w") as f:
                     f.write("\n".join(sections["css"]))
+                self.logger.info("CSS file written successfully")
 
             if sections["js"]:
+                self.logger.info("Writing JS file...")
                 with open(os.path.join(output_dir, "main.js"), "w") as f:
                     f.write("\n".join(sections["js"]))
+                self.logger.info("JS file written successfully")
 
+            self.logger.info("Development output processing completed successfully")
             return {
                 "html": "\n".join(sections["html"]) if sections["html"] else "",
                 "css": "\n".join(sections["css"]) if sections["css"] else "",
@@ -165,84 +206,78 @@ class WebDevelopersCrew:
             }
 
         except Exception as e:
-            logger.error(f"Error in handle_development_output: {str(e)}")
+            self.logger.error(f"Error in handle_development_output: {str(e)}")
+            self.logger.exception("Full traceback:")
             raise
 
     @crew
     def crew(self) -> Crew:
         def process_inputs(inputs):
             try:
+                # Initialize cache if needed
+                if not self.cache_manager:
+                    self.initialize_cache(inputs.get("theme", "Books"))
+
                 # Step 1: Product Manager Task
+                logger.info("Starting Product Manager task...")
                 product_task = self.product_requirements_task()
                 product_output = product_task.execute_sync(self.product_manager())
 
-                # Extract topic and page type
-                output_lines = product_output.split("\n")
-                for line in output_lines:
-                    line = line.strip()
-                    if line.startswith("TOPIC:"):
-                        inputs["topic"] = line.replace("TOPIC:", "").strip().strip('"')
-                    elif line.startswith("PAGE_TYPE:"):
-                        inputs["page_type"] = (
-                            line.replace("PAGE_TYPE:", "").split("(")[0].strip()
-                        )
+                # Force save to cache
+                self.cache_manager.cache_agent_output(
+                    "product_manager", str(product_output)
+                )
+                logger.info("Product Manager output saved to cache")
 
-                logger.info(f"Generated topic: {inputs['topic']}")
-                logger.info(f"Page type: {inputs['page_type']}")
+                # Step 2: Design Task - READ FROM CACHE
+                logger.info("Starting UI/UX Designer task...")
+                design_task = self.design_task()
 
-                # Cache product manager output
-                if self.cache_manager:
-                    self.cache_manager.cache_agent_output(
-                        "product_manager", str(product_output)
+                # Get requirements from cache
+                product_requirements = self.cache_manager.get_agent_output(
+                    "product_manager"
+                )
+                if not product_requirements:
+                    raise ValueError(
+                        "Cannot proceed: Product requirements not found in cache"
                     )
 
-                # Step 2: Design Task
-                design_task = self.design_task()
-                design_task.description = f"""
-                As a UI/UX Designer for a {inputs['theme']} landing page:
+                # Set context from cache
+                design_task.context = (
+                    f"Use these Product Manager requirements:\n{product_requirements}"
+                )
 
-                Based on the Product Manager's requirements:
-                Topic: {inputs['topic']}
-                Page Type: {inputs['page_type']}
-
-                Full Requirements:
-                {product_output}
-
-                Create an innovative design that reflects both the theme and specific requirements
-                while maintaining a cohesive user experience.
-
-                1. Layout Innovation
-                   - Design a layout that best suits the {inputs['page_type']} format
-                   - Create a distinctive hero section that highlights "{inputs['topic']}"
-                   - Implement section arrangements that support the content flow
-                   - Design transitions that enhance the user journey
-                """
+                # Execute design task
                 design_output = design_task.execute_sync(self.ui_ux_designer())
 
-                # Cache design output
-                if self.cache_manager:
-                    self.cache_manager.cache_agent_output(
-                        "ui_ux_designer", str(design_output)
+                # Save design to cache
+                self.cache_manager.cache_agent_output(
+                    "ui_ux_designer", str(design_output)
+                )
+                logger.info("UI/UX Designer output saved to cache")
+
+                # Step 3: Frontend Task - READ FROM CACHE
+                logger.info("Starting Frontend Engineer task...")
+                dev_task = self.development_task()
+
+                # Get design from cache
+                design_specs = self.cache_manager.get_agent_output("ui_ux_designer")
+                if not design_specs:
+                    raise ValueError(
+                        "Cannot proceed: Design specifications not found in cache"
                     )
 
-                # Step 3: Development Task
-                dev_task = self.development_task()
-                dev_task.description = f"""
-                As a Frontend Engineer for a {inputs['theme']} landing page:
+                # Set context from cache
+                dev_task.context = (
+                    f"Implement these design specifications:\n{design_specs}"
+                )
 
-                Project Details:
-                Topic: {inputs['topic']}
-                Page Type: {inputs['page_type']}
-
-                Design Specifications:
-                {design_output}
-
-                Implement this design using Bootstrap, ensuring responsive behavior and optimal performance.
-                """
+                # Execute development task
                 return dev_task.execute_sync(self.frontend_engineer())
 
             except Exception as e:
                 logger.error(f"Error in process_inputs: {str(e)}")
+                logger.exception("Full traceback:")
                 raise
 
         return Crew(

@@ -6,6 +6,7 @@ import logging
 import shutil
 
 from web_developers_crew.crew import WebDevelopersCrew
+from .utils.cache_inspector import inspect_cache
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -55,17 +56,27 @@ def run():
         "theme": THEMES[0],
         "topic": "",
         "page_type": "",
+        "product_output": "",
+        "design_output": "",
     }
 
-    # Clear cache before full run
-    clear_cache()
-    logger.info("Starting fresh run with cleared cache")
+    logger.info("Starting run")
 
     crew = WebDevelopersCrew()
+    crew.inputs = inputs  # Set inputs before initializing cache
     crew.initialize_cache(inputs["theme"])
 
     try:
         result = crew.crew().kickoff(inputs=inputs)
+
+        # Verify cache after run
+        if crew.cache_manager:
+            design_cache = crew.cache_manager.get_agent_output("ui_ux_designer")
+            if design_cache:
+                logger.info("UI/UX design cache verified")
+            else:
+                logger.warning("UI/UX design cache not found after run")
+
         return result
     except Exception as e:
         logger.error(f"An error occurred while running the crew: {str(e)}")
@@ -121,8 +132,22 @@ def run_frontend():
     crew.initialize_cache(inputs["theme"])
     logger.info("Running frontend task with existing cache")
 
-    cached_design = crew.cache_manager.get_agent_output("ui_ux_designer")
-    crew.run_frontend_task(cached_design)
+    try:
+        cached_design = crew.cache_manager.get_agent_output("ui_ux_designer")
+        if not cached_design:
+            logger.error("No cached design found. Please run full crew first.")
+            return 1
+
+        result = crew.run_frontend_task(cached_design)
+        return result
+    except Exception as e:
+        logger.error(f"Error running frontend task: {str(e)}")
+        raise
+
+
+def inspect():
+    """Inspect the cache contents"""
+    inspect_cache()
 
 
 def main():
@@ -132,6 +157,8 @@ def main():
             run_frontend()
         elif sys.argv[1] == "clear-cache":
             clear_cache()
+        elif sys.argv[1] == "inspect":
+            inspect()
         else:
             run()
     else:
