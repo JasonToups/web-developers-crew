@@ -24,6 +24,9 @@ product_requirements_task:
        - Outline key performance metrics
     
     Your output MUST be formatted with clear section markers:
+
+    THEME:
+    [Theme name]
     
     TOPIC:
     [Generated unique topic name]
@@ -39,6 +42,7 @@ product_requirements_task:
     
    
   expected_output: >
+    THEME: [Theme name]
     TOPIC: [Generated unique topic name]
     PAGE_TYPE: [Landing page type and justification]
     STRATEGY: [Business goals and metrics]
@@ -48,42 +52,58 @@ product_requirements_task:
 design_task:
   description: >
     You are a UI/UX Designer for a {theme} landing page.
+
+    Create an innovative UI/UX design for the {topic} landing page that stands out
+    while leveraging Bootstrap 5's capabilities. Focus on creating a unique visual
+    identity that differentiates this landing page from common templates.
+
+    You will reference Bootstrap v5 classes and components as much as possible.
+
     Your ONLY job is to create a technical design specification.
     
     YOU MUST OUTPUT IN THIS EXACT ORDER WITH THESE EXACT SECTION HEADERS:
 
-    1. CONTENT:
+    1. THEME:
+    [Copy theme from Product Manager's requirements]
+    
+    2. TOPIC:
+    [Copy topic from Product Manager's requirements]
+
+    3. PAGE_TYPE:
+    [Copy page type from Product Manager's requirements]
+    
+    4. CONTENT:
     [Copy all content from Product Manager's requirements, organized by section]
 
-    2. LAYOUT:
+    5. LAYOUT:
     [Provide exact specifications for:
     - Hero section (exact height, width, padding in pixels)
     - Content sections (exact grid layout specifications)
     - Navigation structure (exact positioning and spacing)
     - Footer layout (exact measurements and structure)]
 
-    3. VISUAL_DESIGN:
+    6. VISUAL_DESIGN:
     [Provide exact specifications for:
     - Color palette (all hex codes required)
     - Typography (exact font sizes, weights, line heights)
-    - Component styles (exact border radius, shadows, etc.)
+    - Bootstrap V5 Component styles (exact border radius, shadows, etc.)
     - Spacing (exact margin and padding in pixels)]
 
-    4. INTERACTIONS:
+    7. INTERACTIONS:
     [Provide exact specifications for:
     - Hover/focus states (exact color changes, transitions)
     - Animations (exact timing, easing functions)
     - Micro-interactions (exact behavior descriptions)
     - Loading states (exact animation specifications)]
 
-    5. RESPONSIVE_DESIGN:
+    8. RESPONSIVE_DESIGN:
     [Provide exact specifications for:
     - Mobile layout (320px - 768px)
     - Tablet layout (768px - 1024px)
     - Desktop layout (1024px+)
     - Breakpoint-specific features]
 
-    6. COMPONENTS:
+    9. COMPONENTS:
     [Provide exact specifications for:
     - Navigation components (header, menu, dropdowns)
     - Hero section components (headlines, CTAs)
@@ -93,36 +113,37 @@ design_task:
     - Footer components (links, social icons)]
 
     IMPORTANT:
-    - ALL six sections are required
+    - ALL nine sections are required
     - Follow the exact order shown above
     - Include ALL subsections
+    - Use Bootstrap v5 classes and components as much as possible
     - Provide implementation-ready specifications
     - Include exact measurements in pixels
     - Include exact color codes
     - Frontend Engineer needs these exact details
   expected_output: >
-    A complete technical design specification with ALL six sections:
-    CONTENT, LAYOUT, VISUAL_DESIGN, INTERACTIONS, RESPONSIVE_DESIGN, and COMPONENTS.
+    A complete technical design specification with ALL nine sections:
+    THEME, TOPIC, PAGE_TYPE, CONTENT, LAYOUT, VISUAL_DESIGN, INTERACTIONS, RESPONSIVE_DESIGN, and COMPONENTS.
     Each section must contain detailed, implementation-ready specifications.
   agent: ui_ux_designer
 
 development_task:
   description: >
     As a Frontend Engineer for a {theme} landing page, you must implement the UI/UX Designer's specifications
-    using Bootstrap. Your response must contain THREE sections of code, clearly marked:
+    using Bootstrap v5 Classes & Components. Your response must contain THREE sections of code, clearly marked:
 
     1. HTML SECTION:
     ```html
     <!-- Your semantic HTML code here -->
-    <!-- Include Bootstrap classes -->
-    <!-- Focus on component structure -->
+    <!-- Include Bootstrap V5 classes and Components -->
+    <!-- Focus on Component structure utilizing Bootstrap V5 -->
     ```
 
     2. CSS SECTION:
     ```css
     /* Your custom CSS code here */
     /* Include Bootstrap overrides */
-    /* Focus on unique styling */
+    /* Focus on unique styling*/
     ```
 
     3. JS SECTION:
@@ -133,13 +154,14 @@ development_task:
     ```
 
     IMPORTANT RULES:
+    - Use the Theme, Topic, Page Type, and Content from the Design Task
     - Each section must start with the exact marker shown above
     - Only include the relevant language in each section
     - HTML section: Only HTML markup
     - CSS section: Only CSS rules
     - JS section: Only JavaScript code
     - All code must be valid and properly formatted
-    - Use Bootstrap 5 classes and components
+    - Use Bootstrap 5 classes and components as much as possible
     - Implement all UI/UX specifications exactly
     - Ensure responsive behavior works
     - Follow accessibility best practices
@@ -150,11 +172,12 @@ development_task:
     - Skip any of the three sections
     - Use placeholder comments
     - Provide partial implementations
+    - Include any other text besides the Code and Code Language section headers
 
   expected_output: >
-    Three complete code sections:
-    1. HTML section with semantic markup
+    ONLY INCLUDE The Three complete code sections:
+    1. HTML section using Bootstrap V5 classes and components
     2. CSS section with custom styles
     3. JS section with interaction code
-    Each containing only its respective language's code.
+    Each containing ONLY its respective language's CODE.
   agent: frontend_engineer

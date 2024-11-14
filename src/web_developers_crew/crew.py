@@ -44,22 +44,55 @@ class WebDevelopersCrew:
 
     def run_frontend_task(self, cached_design: str = None):
         """Run the frontend development task"""
-        # Initialize inputs if not already set
-        if self.inputs is None:
-            self.inputs = {"theme": "Books"}  # Default theme
+        try:
+            # Initialize inputs if not already set
+            if self.inputs is None:
+                self.inputs = {"theme": "Books"}  # Default theme
 
-        frontend_engineer = self.frontend_engineer()
-        dev_task = self.development_task()
+            # Initialize cache if needed
+            if not self.cache_manager:
+                logger.info("Initializing cache manager...")
+                self.initialize_cache(self.inputs.get("theme", "Books"))
 
-        # If we have cached design, include it in the task context
-        if cached_design:
-            dev_task.context = (
-                f"Using this UI/UX design:\n{cached_design}\n\n" + dev_task.context
+            # Verify cache contents
+            if not cached_design:
+                logger.info("No design provided, checking cache...")
+                cached_design = self.cache_manager.get_agent_output("ui_ux_designer")
+
+                if not cached_design:
+                    logger.error("No UI/UX design found in cache!")
+                    raise ValueError(
+                        "Cannot proceed: UI/UX design specifications not found in cache. "
+                        "Please run the full crew process first or provide design specifications."
+                    )
+
+            logger.info(
+                "Found UI/UX design specifications, proceeding with frontend task"
             )
 
-        dev_task.agent = frontend_engineer
-        dev_task.callback = self.handle_development_output
-        return dev_task.execute_sync(frontend_engineer)
+            # Create and configure frontend task
+            frontend_engineer = self.frontend_engineer()
+            dev_task = self.development_task()
+
+            # Set context with verified design
+            dev_task.context = f"""
+            IMPLEMENT THESE EXACT DESIGN SPECIFICATIONS:
+            
+            {cached_design}
+            
+            {dev_task.context}
+            """
+
+            dev_task.agent = frontend_engineer
+            dev_task.callback = self.handle_development_output
+
+            # Execute task
+            return dev_task.execute_sync(frontend_engineer)
+
+        except Exception as e:
+            logger.error(f"Error in run_frontend_task: {str(e)}")
+            logger.exception("Full traceback:")
+            raise
 
     @agent
     def product_manager(self) -> Agent:
@@ -86,84 +119,96 @@ class WebDevelopersCrew:
     def product_requirements_task(self) -> Task:
         """Create the product requirements task"""
         task_config = self.tasks_config["product_requirements_task"]
+        theme = self.inputs.get("theme", "Books")
+
+        # Update task description with theme
+        task_description = task_config["description"].replace("{theme}", theme)
+
         return Task(
-            description=task_config["description"],
+            description=task_description,
             expected_output=task_config["expected_output"],
             agent=self.product_manager(),
         )
 
     @task
     def design_task(self) -> Task:
-        """Create the design task"""
+        """Create the design task with cached product requirements"""
         task_config = self.tasks_config["design_task"]
+        theme = self.inputs.get("theme", "Books")
+
+        # Get product requirements from cache
+        product_requirements = self.cache_manager.get_agent_output("product_manager")
+        if not product_requirements:
+            raise ValueError(
+                f"Cannot start Design: {theme} Product requirements not found in cache"
+            )
+
+        # Update task description with theme and cached requirements
+        task_description = task_config["description"].replace("{theme}", theme)
+        task_description = f"""
+        {task_description}
+        
+        USE THESE EXACT PRODUCT REQUIREMENTS FOR {theme.upper()}:
+        {product_requirements}
+        """
+
         return Task(
-            description=task_config["description"],
+            description=task_description,
             expected_output=task_config["expected_output"],
             agent=self.ui_ux_designer(),
         )
 
     @task
     def development_task(self) -> Task:
-        """Create the development task"""
+        """Create the development task with cached design specs"""
         task_config = self.tasks_config["development_task"]
+        theme = self.inputs.get("theme", "Books")
+
+        # Get design specs from cache
+        design_specs = self.cache_manager.get_agent_output("ui_ux_designer")
+        if not design_specs:
+            raise ValueError(
+                f"Cannot start Development: {theme} Design specifications not found in cache"
+            )
+
+        # Update task description with theme and cached specs
+        task_description = task_config["description"].replace("{theme}", theme)
+        task_description = f"""
+        {task_description}
+        
+        IMPLEMENT THESE EXACT DESIGN SPECIFICATIONS FOR {theme.upper()}:
+        {design_specs}
+        """
+
         return Task(
-            description=task_config["description"],
+            description=task_description,
             expected_output=task_config["expected_output"],
             agent=self.frontend_engineer(),
         )
 
     def handle_development_output(self, output):
-        """Helper method to handle the development task output"""
-        # Add debug logging at start
-        logger.debug(
-            f"Starting handle_development_output with output: {output[:100]}..."
-        )
-        self.logger.info("Processing development output...")
-
+        """Handle the frontend development output"""
         try:
-            if self.inputs is None:
-                self.logger.error("Inputs not initialized")
-                raise ValueError("Inputs not initialized")
+            # Create output directory
+            output_dir = Path("output")
+            output_dir.mkdir(exist_ok=True)
 
-            # Sanitize theme and topic for directory names
-            theme = self.inputs["theme"].lower()
-            topic = self.inputs["topic"].lower()
-
-            # Add debug logging for inputs
-            self.logger.debug(f"Using theme: {theme}, topic: {topic}")
-
-            # Replace spaces and special chars with underscores
-            topic_dir = "".join(
-                c if c.isalnum() or c == "_" else "_" for c in topic.replace(" ", "_")
-            )
-
-            # Create output directory structure
-            output_dir = os.path.join("output", theme, topic_dir)
-            os.makedirs(output_dir, exist_ok=True)
-
-            self.logger.info(f"Creating output in directory: {output_dir}")
-
-            # Extract HTML, CSS, JS sections
+            # Initialize section collectors
             sections = {"html": [], "css": [], "js": []}
             current_section = None
 
-            # Add debug logging for output parsing
-            self.logger.debug("Starting to parse output sections")
-
+            # Parse output into sections
             for line in str(output).split("\n"):
                 line_lower = line.lower().strip()
 
-                if "html:" in line_lower or "```html" in line_lower:
+                if "```html" in line_lower:
                     current_section = "html"
-                    self.logger.debug("Found HTML section")
                     continue
-                elif "css:" in line_lower or "```css" in line_lower:
+                elif "```css" in line_lower:
                     current_section = "css"
-                    self.logger.debug("Found CSS section")
                     continue
-                elif "js:" in line_lower or "```javascript" in line_lower:
+                elif "```javascript" in line_lower:
                     current_section = "js"
-                    self.logger.debug("Found JS section")
                     continue
                 elif "```" in line:
                     current_section = None
@@ -172,113 +217,117 @@ class WebDevelopersCrew:
                 if current_section and line.strip():
                     sections[current_section].append(line)
 
-            # Write files with logging
+            # Get base template
+            template_path = Path(__file__).parent / "templates" / "base.html"
+            if not template_path.exists():
+                raise ValueError(f"Base template not found at {template_path}")
+
+            base_template = template_path.read_text()
+
+            # Write files
             if sections["html"]:
-                self.logger.info("Writing HTML file...")
-                processed_html = self.template_manager.process_html(
-                    "\n".join(sections["html"]),
-                    title=f"{self.inputs['topic']} - {self.inputs['theme']} Landing Page",
+                # Wrap HTML content with base template
+                html_content = "\n".join(sections["html"])
+                final_html = base_template.replace("{body}", html_content)
+                final_html = final_html.replace(
+                    "{title}", f"{self.inputs.get('theme', 'Books')} Landing Page"
                 )
-                with open(os.path.join(output_dir, "index.html"), "w") as f:
-                    f.write(processed_html)
-                self.logger.info("HTML file written successfully")
+
+                html_path = output_dir / "index.html"
+                html_path.write_text(final_html)
+                logger.info(f"HTML written to {html_path}")
 
             if sections["css"]:
-                self.logger.info("Writing CSS file...")
-                with open(os.path.join(output_dir, "styles.css"), "w") as f:
-                    f.write("\n".join(sections["css"]))
-                self.logger.info("CSS file written successfully")
+                css_path = output_dir / "style.css"
+                css_content = "\n".join(sections["css"])
+                css_path.write_text(css_content)
+                logger.info(f"CSS written to {css_path}")
 
             if sections["js"]:
-                self.logger.info("Writing JS file...")
-                with open(os.path.join(output_dir, "main.js"), "w") as f:
-                    f.write("\n".join(sections["js"]))
-                self.logger.info("JS file written successfully")
+                js_path = output_dir / "script.js"
+                js_content = "\n".join(sections["js"])
+                js_path.write_text(js_content)
+                logger.info(f"JavaScript written to {js_path}")
 
-            self.logger.info("Development output processing completed successfully")
-            return {
-                "html": "\n".join(sections["html"]) if sections["html"] else "",
-                "css": "\n".join(sections["css"]) if sections["css"] else "",
-                "js": "\n".join(sections["js"]) if sections["js"] else "",
-                "theme": theme,
-                "topic": topic,
-                "output_dir": output_dir,
-            }
+            return True
 
         except Exception as e:
-            self.logger.error(f"Error in handle_development_output: {str(e)}")
-            self.logger.exception("Full traceback:")
-            raise
+            logger.error(f"Error handling development output: {e}")
+            logger.exception("Full traceback:")
+            return False
 
     @crew
     def crew(self) -> Crew:
         def process_inputs(inputs):
             try:
-                # Initialize cache if needed
-                if not self.cache_manager:
-                    self.initialize_cache(inputs.get("theme", "Books"))
+                logger.info("Process inputs started...")
 
                 # Step 1: Product Manager Task
                 logger.info("Starting Product Manager task...")
                 product_task = self.product_requirements_task()
                 product_output = product_task.execute_sync(self.product_manager())
 
-                # Force save to cache
-                self.cache_manager.cache_agent_output(
+                # Cache product output with verification
+                if not self.cache_manager.cache_agent_output(
                     "product_manager", str(product_output)
-                )
-                logger.info("Product Manager output saved to cache")
+                ):
+                    raise ValueError("Failed to cache Product Manager output")
+                logger.info("Product Manager output cached and verified")
 
-                # Step 2: Design Task - READ FROM CACHE
+                # Step 2: Design Task (reads from cache)
                 logger.info("Starting UI/UX Designer task...")
-                design_task = self.design_task()
+                try:
+                    design_task = (
+                        self.design_task()
+                    )  # Will raise error if cache missing
+                    design_output = design_task.execute_sync(self.ui_ux_designer())
 
-                # Get requirements from cache
-                product_requirements = self.cache_manager.get_agent_output(
-                    "product_manager"
-                )
-                if not product_requirements:
-                    raise ValueError(
-                        "Cannot proceed: Product requirements not found in cache"
-                    )
+                    # Cache design output with verification
+                    if not self.cache_manager.cache_agent_output(
+                        "ui_ux_designer", str(design_output)
+                    ):
+                        raise ValueError("Failed to cache UI/UX Designer output")
+                    logger.info("UI/UX Designer output cached and verified")
+                except ValueError as e:
+                    logger.error(f"Design task failed: {e}")
+                    raise
 
-                # Set context from cache
-                design_task.context = (
-                    f"Use these Product Manager requirements:\n{product_requirements}"
-                )
-
-                # Execute design task
-                design_output = design_task.execute_sync(self.ui_ux_designer())
-
-                # Save design to cache
-                self.cache_manager.cache_agent_output(
-                    "ui_ux_designer", str(design_output)
-                )
-                logger.info("UI/UX Designer output saved to cache")
-
-                # Step 3: Frontend Task - READ FROM CACHE
+                # Step 3: Frontend Task (reads from cache)
                 logger.info("Starting Frontend Engineer task...")
-                dev_task = self.development_task()
+                try:
+                    dev_task = (
+                        self.development_task()
+                    )  # Will raise error if cache missing
+                    dev_output = dev_task.execute_sync(self.frontend_engineer())
 
-                # Get design from cache
-                design_specs = self.cache_manager.get_agent_output("ui_ux_designer")
-                if not design_specs:
-                    raise ValueError(
-                        "Cannot proceed: Design specifications not found in cache"
-                    )
+                    # Handle development output
+                    if not self.handle_development_output(dev_output):
+                        raise ValueError("Failed to handle development output")
+                    logger.info("Frontend output processed successfully")
+                except ValueError as e:
+                    logger.error(f"Development task failed: {e}")
+                    raise
 
-                # Set context from cache
-                dev_task.context = (
-                    f"Implement these design specifications:\n{design_specs}"
-                )
-
-                # Execute development task
-                return dev_task.execute_sync(self.frontend_engineer())
+                return dev_output
 
             except Exception as e:
                 logger.error(f"Error in process_inputs: {str(e)}")
                 logger.exception("Full traceback:")
                 raise
+
+        # Create tasks with callbacks
+        product_task = self.product_requirements_task()
+        product_task.callback = lambda output: self.cache_manager.cache_agent_output(
+            "product_manager", str(output)
+        )
+
+        design_task = self.design_task()
+        design_task.callback = lambda output: self.cache_manager.cache_agent_output(
+            "ui_ux_designer", str(output)
+        )
+
+        dev_task = self.development_task()
+        dev_task.callback = self.handle_development_output
 
         return Crew(
             agents=[
@@ -286,13 +335,9 @@ class WebDevelopersCrew:
                 self.ui_ux_designer(),
                 self.frontend_engineer(),
             ],
-            tasks=[
-                self.product_requirements_task(),
-                self.design_task(),
-                self.development_task(),
-            ],
+            tasks=[product_task, design_task, dev_task],  # Use tasks with callbacks
             process=Process.sequential,
-            process_inputs=process_inputs,
+            process_inputs=process_inputs,  # This will now be called after each task
             verbose=True,
         )
 

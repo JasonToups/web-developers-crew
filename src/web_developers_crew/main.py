@@ -4,6 +4,7 @@ import warnings
 import os
 import logging
 import shutil
+from pathlib import Path
 
 from web_developers_crew.crew import WebDevelopersCrew
 from .utils.cache_inspector import inspect_cache
@@ -62,24 +63,28 @@ def run():
 
     logger.info("Starting run")
 
-    crew = WebDevelopersCrew()
-    crew.inputs = inputs  # Set inputs before initializing cache
-    crew.initialize_cache(inputs["theme"])
-
     try:
-        result = crew.crew().kickoff(inputs=inputs)
+        crew = WebDevelopersCrew()
+        crew.inputs = inputs
+        crew.initialize_cache(inputs["theme"])
 
-        # Verify cache after run
+        # Run crew with process_inputs
+        result = crew.crew().kickoff()
+
+        # Verify outputs
         if crew.cache_manager:
-            design_cache = crew.cache_manager.get_agent_output("ui_ux_designer")
-            if design_cache:
-                logger.info("UI/UX design cache verified")
-            else:
-                logger.warning("UI/UX design cache not found after run")
+            for agent in ["product_manager", "ui_ux_designer"]:
+                output = crew.cache_manager.get_agent_output(agent)
+                if output:
+                    logger.info(f"{agent} output verified in cache")
+                else:
+                    logger.warning(f"{agent} output not found in cache")
 
         return result
+
     except Exception as e:
         logger.error(f"An error occurred while running the crew: {str(e)}")
+        logger.exception("Full traceback:")
         raise
 
 
@@ -124,25 +129,47 @@ def test():
 
 def run_frontend():
     """Run only the frontend task using cached design"""
-    inputs = {"theme": THEMES[0]}
-    crew = WebDevelopersCrew()
-    crew.inputs = inputs
-
-    # Don't clear cache for frontend-only runs
-    crew.initialize_cache(inputs["theme"])
-    logger.info("Running frontend task with existing cache")
-
     try:
+        logger.info("Running frontend task with existing cache")
+        crew = WebDevelopersCrew()
+
+        # Initialize cache
+        crew.initialize_cache(THEMES[0])
+
+        # Get cached design
         cached_design = crew.cache_manager.get_agent_output("ui_ux_designer")
         if not cached_design:
-            logger.error("No cached design found. Please run full crew first.")
+            logger.error("No UI/UX design found in cache!")
+            print(
+                """
+            Error: UI/UX design specifications not found in cache.
+            Please run the full crew process first using:
+                crewai run
+            
+            Or provide design specifications manually.
+            """
+            )
             return 1
 
+        # Run frontend task with cached design
         result = crew.run_frontend_task(cached_design)
-        return result
+
+        # Verify output files were created
+        output_dir = Path("output")
+        expected_files = ["index.html", "style.css", "script.js"]
+
+        for file in expected_files:
+            if not (output_dir / file).exists():
+                logger.warning(f"Expected output file {file} not found!")
+            else:
+                logger.info(f"Generated {file} successfully")
+
+        return 0
+
     except Exception as e:
-        logger.error(f"Error running frontend task: {str(e)}")
-        raise
+        logger.error(f"Error running frontend task: {e}")
+        logger.exception("Full traceback:")
+        return 1
 
 
 def inspect():
