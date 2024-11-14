@@ -68,3 +68,13 @@ class CacheManager:
         except Exception as e:
             logger.error(f"Error reading cache for {agent_name}: {e}")
             return None
+
+    def clear(self):
+        """Clear the cache file"""
+        try:
+            self.cache_data = {}
+            self._write_cache()
+            return True
+        except Exception as e:
+            logger.error(f"Failed to clear cache: {str(e)}")
+            return False

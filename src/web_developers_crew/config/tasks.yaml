@@ -127,50 +127,59 @@ design_task:
 
 development_task:
   description: >
-    As a Frontend Engineer for a {theme} landing page, you must implement the UI/UX Designer's specifications using Bootstrap v5 Classes & Components. Your response must contain THREE sections of code, clearly marked:
+    As a Frontend Engineer for a {theme} landing page, implement the UI/UX Designer's specifications following our standard landing page structure:
+
+    REQUIRED SECTIONS (in order):
+    1. Navigation Bar
+       - Responsive navbar with logo and menu items
+       - Mobile hamburger menu
+       - Bootstrap navbar component
+
+    2. Hero Section
+       - Clear headline and subheadline
+       - Primary CTA button
+       - Optional hero image
+       - Full-width container
+
+    3. Features Section
+       - Grid of feature cards
+       - Icons or images
+       - Bootstrap card components
+       - Responsive grid layout
+
+    4. How It Works / Process
+       - Step-by-step explanation
+       - Numbered or icon-based steps
+       - Clear progression
+
+    5. Footer
+       - Copyright information
+       - Additional links
+       - Company information
+
+    Your response must contain THREE sections:
 
     1. HTML SECTION:
     ```html
-    <!-- Your semantic HTML code here -->
-    <!-- Include Bootstrap V5 classes and Components -->
-    <!-- Focus on Component structure utilizing Bootstrap V5 -->
+    <!-- Follow example template structure exactly -->
     ```
 
     2. CSS SECTION:
     ```css
-    /* Your custom CSS code here */
-    /* Include Bootstrap overrides */
-    /* Focus on unique styling*/
+    /* Custom styles and Bootstrap overrides */
     ```
 
     3. JS SECTION:
     ```javascript
-    // Your JavaScript code here
-    // Include interaction logic
-    // Focus on functionality
+    // Interactive elements and functionality
     ```
 
-    IMPORTANT RULES:
-    - Use the Theme, Topic, Page Type, and Content from the Design Task
-    - Each section must start with the exact marker shown above
-    - Only include the relevant language in each section
-    - HTML section: Only HTML markup
-    - CSS section: Only CSS rules
-    - JS section: Only JavaScript code
-    - All code must be valid and properly formatted
-    - Use Bootstrap 5 classes and components as much as possible
-    - Implement all UI/UX specifications exactly
-    - Ensure responsive behavior works
+    IMPORTANT:
+    - Reference the example template structure
+    - Use semantic HTML5 elements
+    - Implement all sections in order
+    - Use Bootstrap 5 components
     - Follow accessibility best practices
-
-    DO NOT:
-    - Mix languages between sections
-    - Include explanatory text
-    - Skip any of the three sections
-    - Use placeholder comments
-    - Provide partial implementations
-    - Include any other text besides the Code and Code Language section headers
-
   expected_output: >
     ONLY INCLUDE The Three complete code sections:
     1. HTML section using Bootstrap V5 classes and components

@@ -139,9 +139,15 @@ class WebDevelopersCrew:
         # Get product requirements from cache
         product_requirements = self.cache_manager.get_agent_output("product_manager")
         if not product_requirements:
+            logger.error("Product requirements missing from cache")
             raise ValueError(
                 f"Cannot start Design: {theme} Product requirements not found in cache"
             )
+
+        # Log the requirements we're actually using
+        logger.info(
+            f"Using product requirements from cache: {product_requirements[:100]}..."
+        )
 
         # Update task description with theme and cached requirements
         task_description = task_config["description"].replace("{theme}", theme)
@@ -201,40 +207,29 @@ class WebDevelopersCrew:
             for line in str(output).split("\n"):
                 line_lower = line.lower().strip()
 
+                # Check for section markers
                 if "```html" in line_lower:
                     current_section = "html"
                     continue
                 elif "```css" in line_lower:
                     current_section = "css"
                     continue
-                elif "```javascript" in line_lower:
+                elif "```javascript" in line_lower or "```js" in line_lower:
                     current_section = "js"
                     continue
                 elif "```" in line:
                     current_section = None
                     continue
 
+                # Add content to current section if we're in one
                 if current_section and line.strip():
                     sections[current_section].append(line)
 
-            # Get base template
-            template_path = Path(__file__).parent / "templates" / "base.html"
-            if not template_path.exists():
-                raise ValueError(f"Base template not found at {template_path}")
-
-            base_template = template_path.read_text()
-
             # Write files
             if sections["html"]:
-                # Wrap HTML content with base template
-                html_content = "\n".join(sections["html"])
-                final_html = base_template.replace("{body}", html_content)
-                final_html = final_html.replace(
-                    "{title}", f"{self.inputs.get('theme', 'Books')} Landing Page"
-                )
-
                 html_path = output_dir / "index.html"
-                html_path.write_text(final_html)
+                html_content = "\n".join(sections["html"])
+                html_path.write_text(html_content)
                 logger.info(f"HTML written to {html_path}")
 
             if sections["css"]:
@@ -262,15 +257,25 @@ class WebDevelopersCrew:
             try:
                 logger.info("Process inputs started...")
 
+                # Clear cache at the start of a new run
+                self.clear_cache()
+
+                # Initialize cache
+                if not self.cache_manager:
+                    theme = inputs.get("theme", "Books")
+                    self.initialize_cache(theme)
+                    self.inputs = inputs
+
                 # Step 1: Product Manager Task
                 logger.info("Starting Product Manager task...")
                 product_task = self.product_requirements_task()
                 product_output = product_task.execute_sync(self.product_manager())
 
-                # Cache product output with verification
+                # Cache product output with verification and error handling
                 if not self.cache_manager.cache_agent_output(
                     "product_manager", str(product_output)
                 ):
+                    logger.error("Failed to cache Product Manager output")
                     raise ValueError("Failed to cache Product Manager output")
                 logger.info("Product Manager output cached and verified")
 
@@ -363,3 +368,34 @@ class WebDevelopersCrew:
         if self.cache_manager:
             self.cache_manager.cache_agent_output("ui_ux_designer", str(output))
         return output
+
+    def clear_cache(self):
+        """Clear the cache before starting a new run"""
+        if self.cache_manager:
+            self.cache_manager.clear()
+            logger.info("Cache cleared successfully")
+
+    def run_product_requirements(self):
+        """Run only the product requirements task and update cache"""
+        try:
+            if not self.cache_manager:
+                self.initialize_cache(self.inputs.get("theme", "Books"))
+
+            # Clear existing cache
+            self.clear_cache()
+
+            # Run product manager task
+            product_task = self.product_requirements_task()
+            product_output = product_task.execute_sync(self.product_manager())
+
+            # Cache the output
+            if not self.cache_manager.cache_agent_output(
+                "product_manager", str(product_output)
+            ):
+                raise ValueError("Failed to cache Product Manager output")
+
+            return product_output
+
+        except Exception as e:
+            logger.error(f"Error in run_product_requirements: {str(e)}")
+            raise
