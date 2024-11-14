@@ -12,10 +12,11 @@ dependencies = [
 web_developers_crew = "web_developers_crew.main:main"
 run_crew = "web_developers_crew.main:main"
 clear_cache = "web_developers_crew.main:clear_cache"
-run_frontend = "web_developers_crew.main:run_frontend_only"
+run_frontend = "web_developers_crew.main:run_frontend"
 train = "web_developers_crew.main:train"
 replay = "web_developers_crew.main:replay"
 test = "web_developers_crew.main:test"
+inspect_cache = "web_developers_crew.main:inspect_cache"
 
 [build-system]
 requires = ["hatchling"]
