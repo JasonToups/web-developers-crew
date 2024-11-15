@@ -3,191 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books Landing Page</title>
+    <title>Books Homepage</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
+    <link rel="stylesheet" href="global.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books - Unlock the Secrets of Writing Fiction</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#"><img src="logo.png" alt="Logo"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Categories</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Pages
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Testimonials</a></li>
-                            <li><a class="dropdown-item" href="#">Blog</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- Hero Section -->
-    <section id="hero">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-lg-5 pt-5 mx-auto text-center">
-                    <img src="logo.png" alt="Logo" width="80" height="80">
-                    <h1>Unlock the Secrets of Writing Fiction</h1>
-                    <p class="lead">Discover the transformative power of reading in our vast selection of self-help books. Browse through our categories and bestsellers, or read customer testimonials.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Categories Section -->
-    <section id="categories">
-        <div class="container pt-5">
-            <div class="row text-center mb-4 pb-2">
-                <div class="col">
-                    <h1>Categories</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 col-lg-2 mb-3 mb-lg-0 text-center">
-                    <img src="image.jpg" alt="Category Image" width="150" height="150">
-                    <h4>Self-help</h4>
-                </div>
-                <div class="col-md-3 col-lg-2 mb-3 mb-lg-0 text-center">
-                    <img src="image.jpg" alt="Category Image" width="150" height="150">
-                    <h4>Fiction</h4>
-                </div>
-                <div class="col-md-3 col-lg-2 mb-3 mb-lg-0 text-center">
-                    <img src="image.jpg" alt="Category Image" width="150" height="150">
-                    <h4>Biography</h4>
-                </div>
-                <div class="col-md-3 col-lg-2 mb-3 mb-lg-0 text-center">
-                    <img src="image.jpg" alt="Category Image" width="150" height="150">
-                    <h4>History</h4>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Bestsellers Section -->
-    <section id="bestsellers">
-        <div class="container pt-5">
-            <div class="row text-center mb-4 pb-2">
-                <div class="col">
-                    <h1>Bestsellers</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 col-lg-2 mb-3 mb-lg-0 text-center">
-                    <img src="image.jpg" alt="Bestseller Image" width="150" height="150">
-                    <h4>The Power of Now</h4>
-                </div>
-                <div class="col-md-3 col-lg-2 mb-3 mb-lg-0 text-center">
-                    <img src="image.jpg" alt="Bestseller Image" width="150" height="150">
-                    <h4>To Kill a Mockingbird</h4>
-                </div>
-                <div class="col-md-3 col-lg-2 mb-3 mb-lg-0 text-center">
-                    <img src="image.jpg" alt="Bestseller Image" width="150" height="150">
-                    <h4>The Alchemist</h4>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Testimonials Section -->
-    <section id="testimonials">
-        <div class="container pt-5">
-            <div class="row text-center mb-4 pb-2">
-                <div class="col">
-                    <h1>Testimonials</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 col-lg-2 mb-3 mb-lg-0 text-center">
-                    <img src="image.jpg" alt="Testimonial Image" width="150" height="150">
-                    <h4>John Smith</h4>
-                </div>
-                <div class="col-md-3 col-lg-2 mb-3 mb-lg-0 text-center">
-                    <img src="image.jpg" alt="Testimonial Image" width="150" height="150">
-                    <h4>Jane Doe</h4>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Blog Section -->
-    <section id="blog">
-        <div class="container pt-5">
-            <div class="row text-center mb-4 pb-2">
-                <div class="col">
-                    <h1>Blog</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 col-lg-2 mb-3 mb-lg-0 text-center">
-                    <img src="image.jpg" alt="Blog Image" width="150" height="150">
-                    <h4>The Importance of Reading</h4>
-                </div>
-            </div>
-        </div>
-    </section>
-CSS:
-* {
-    margin: 0;
-    padding: 0;
-}
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.5;
-}
-.container {
-    max-width: 1280px;
-    margin: 0 auto;
-}
-#hero {
-    height: 30vh;
-    background-color: #f44336;
-    color: white;
-}
-#categories, #bestsellers, #testimonials, #blog {
-    margin-top: -25px;
-    padding-top: 25px;
-    border-top: 1px solid black;
-}
-.row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-img {
-    width: 100%;
-    height: auto;
-}
-h1, h4 {
-    font-weight: normal;
-}
-h1 {
-    margin-bottom: 25px;
-}
-.lead {
-    margin-bottom: 30px;
-}
+    <header class="book-header">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><img src="logo.png" alt="Logo"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Services
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<section class="book-hero">
+  <div class="container-fluid d-flex align-items-center justify-content-center">
+    <div class="row flex-column justify-content-center">
+      <div class="col-12 text-center">
+        <h1>Welcome to our Bookstore</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra magna ac semper elementum. Mauris a massa tincidunt, ultricies nisi non, posuere mauris. Duis velit purus, consequat ut sapien eget, suscipit hendrerit diam.</p>
+        <button class="btn btn-primary">Shop Now</button>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="book-features">
+  <div class="container">
+    <h2>Our Features</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+      <div class="col d-flex align-items-center justify-content-center">
+        <img src="feature-1.jpg" alt="Feature 1">
+        <h3>Shop from anywhere</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </div>
+      <div class="col d-flex align-items-center justify-content-center">
+        <img src="feature-2.jpg" alt="Feature 2">
+        <h3>Secure payments</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </div>
+      <div class="col d-flex align-items-center justify-content-center">
+        <img src="feature-3.jpg" alt="Feature 3">
+        <h3>24/7 Customer support</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="book-content">
+  <div class="container">
+    <h2>Browse Our Books</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+      <div class="col d-flex align-items-center justify-content-center">
+        <img src="book-1.jpg" alt="Book 1">
+        <h3>Harry Potter</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </div>
+      <div class="col d-flex align-items-center justify-content-center">
+        <img src="book-2.jpg" alt="Book 2">
+        <h3>The Lord of the Rings</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </div>
+      <div class="col d-flex align-items-center justify-content-center">
+        <img src="book-3.jpg" alt="Book 3">
+        <h3>The Great Gatsby</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="book-footer">
+  <div class="container text-center">
+    <small>&copy; 2023 - All rights reserved</small>
+  </div>
+</footer>
     
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

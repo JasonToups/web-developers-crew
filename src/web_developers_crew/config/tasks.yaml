@@ -51,135 +51,127 @@ product_requirements_task:
 
 design_task:
   description: >
-    You are a UI/UX Designer for a {theme} landing page.
+    As a UI/UX Designer for a {theme} website homepage, create a comprehensive design specification following our template system:
 
-    Create an innovative UI/UX design for the {topic} landing page that stands out while leveraging Bootstrap 5's capabilities. Focus on creating a unique visual identity that differentiates this landing page from common templates.
-
-    You will reference Bootstrap v5 classes and components as much as possible.
-
-    Your ONLY job is to create a technical design specification.
+    STEP 1 - TEMPLATE REFERENCE
+    First, review our example template in /templates/example:
+    - Study the Bootstrap components used
+    - Note the semantic HTML structure
+    - Observe how global.css variables are applied
+    - See how sections are organized and styled
     
-    YOU MUST OUTPUT IN THIS EXACT ORDER WITH THESE EXACT SECTION HEADERS:
+    STEP 2 - STRUCTURE PLANNING
+    Then, use /templates/structure.html to:
+    - Determine which sections are required vs optional for {theme}
+    - Select appropriate section variations for this website type
+    - Plan content organization and hierarchy
+    - Choose relevant components for each section
 
-    1. THEME:
-    [Copy theme from Product Manager's requirements]
-    
-    2. TOPIC:
-    [Copy topic from Product Manager's requirements]
+    STEP 3 - DESIGN SPECIFICATION
+    Create a detailed specification including:
+    1. THEME
+       - Color scheme (using global.css variables)
+       - Typography choices
+       - Spacing adjustments
+       - Component styling
 
-    3. PAGE_TYPE:
-    [Copy page type from Product Manager's requirements]
-    
-    4. CONTENT:
-    [Copy all content from Product Manager's requirements, organized by section]
+    2. LAYOUT
+       - Selected sections (in order)
+       - Content structure
+       - Grid arrangements
+       - Responsive breakpoints
 
-    5. LAYOUT:
-    [Provide exact specifications for:
-    - Hero section (exact height, width, padding in pixels)
-    - Content sections (exact grid layout specifications)
-    - Navigation structure (exact positioning and spacing)
-    - Footer layout (exact measurements and structure)]
+    3. COMPONENTS
+       - Bootstrap components to use
+       - Custom component variations
+       - Interactive elements
+       - Responsive behavior
 
-    6. VISUAL_DESIGN:
-    [Provide exact specifications for:
-    - Color palette (all hex codes required)
-    - Typography (exact font sizes, weights, line heights)
-    - Bootstrap V5 Component styles (exact border radius, shadows, etc.)
-    - Spacing (exact margin and padding in pixels)]
-
-    7. INTERACTIONS:
-    [Provide exact specifications for:
-    - Hover/focus states (exact color changes, transitions)
-    - Animations (exact timing, easing functions)
-    - Micro-interactions (exact behavior descriptions)
-    - Loading states (exact animation specifications)]
-
-    8. RESPONSIVE_DESIGN:
-    [Provide exact specifications for:
-    - Mobile layout (320px - 768px)
-    - Tablet layout (768px - 1024px)
-    - Desktop layout (1024px+)
-    - Breakpoint-specific features]
-
-    9. COMPONENTS:
-    [Provide exact specifications for:
-    - Navigation components (header, menu, dropdowns)
-    - Hero section components (headlines, CTAs)
-    - Content section components (cards, lists)
-    - Call-to-action components (buttons, forms)
-    - Form components (inputs, labels, validation)
-    - Footer components (links, social icons)]
+    4. CONTENT
+       - Section headlines
+       - Supporting text
+       - CTA messages
+       - Image requirements
 
     IMPORTANT:
-    - ALL nine sections are required
-    - Follow the exact order shown above
-    - Include ALL subsections
-    - Use Bootstrap v5 classes and components as much as possible
-    - Provide implementation-ready specifications
-    - Include exact measurements in pixels
-    - Include exact color codes
-    - Frontend Engineer needs these exact details
+    - Reference example/index.html for implementation patterns
+    - Follow structure.html for section organization
+    - Use Bootstrap 5 components
+    - Apply global.css variable system
+    - Maintain responsive design principles
+    - Consider accessibility requirements
+
   expected_output: >
-    A complete technical design specification with ALL nine sections:
-    THEME, TOPIC, PAGE_TYPE, CONTENT, LAYOUT, VISUAL_DESIGN, INTERACTIONS, RESPONSIVE_DESIGN, and COMPONENTS.
-    Each section must contain detailed, implementation-ready specifications.
+    A complete technical design specification that:
+    1. Lists all sections to include (referencing structure.html)
+    2. Provides detailed component specifications
+    3. Includes exact content requirements
+    4. Specifies styling using global.css variables
+    5. Details responsive behavior
+    6. Notes any custom variations needed
   agent: ui_ux_designer
 
 development_task:
   description: >
-    As a Frontend Engineer for a {theme} landing page, implement the UI/UX Designer's specifications following our standard landing page structure:
+    As a Frontend Engineer for a {theme} website, implement a modern homepage template following these required sections:
 
     REQUIRED SECTIONS (in order):
-    1. Navigation Bar
-       - Responsive navbar with logo and menu items
-       - Mobile hamburger menu
-       - Bootstrap navbar component
+    1. Header
+       - Logo/branding
+       - Primary navigation
+       - Secondary navigation (if needed)
+       - Call-to-action button
+       - Mobile-responsive menu
 
     2. Hero Section
-       - Clear headline and subheadline
-       - Primary CTA button
-       - Optional hero image
-       - Full-width container
+       - Main headline
+       - Supporting text
+       - Primary CTA
+       - Background image/video
+       - Optional: Floating elements
 
-    3. Features Section
-       - Grid of feature cards
+    3. Main Features/Benefits
+       - Grid or card layout
        - Icons or images
-       - Bootstrap card components
-       - Responsive grid layout
+       - Feature descriptions
+       - Optional: Hover effects
 
-    4. How It Works / Process
-       - Step-by-step explanation
-       - Numbered or icon-based steps
-       - Clear progression
+    4. Content Showcase
+       - Dynamic grid/masonry layout
+       - Content previews
+       - Category filters
+       - Pagination/load more
 
-    5. Footer
-       - Copyright information
-       - Additional links
-       - Company information
+    5. Social Proof
+       - Testimonials
+       - Reviews
+       - Ratings
+       - Client logos
 
-    Your response must contain THREE sections:
+    6. Call to Action
+       - Strong headline
+       - Supporting text
+       - Form or button
+       - Background imagery
 
-    1. HTML SECTION:
-    ```html
-    <!-- Follow example template structure exactly -->
-    ```
-
-    2. CSS SECTION:
-    ```css
-    /* Custom styles and Bootstrap overrides */
-    ```
-
-    3. JS SECTION:
-    ```javascript
-    // Interactive elements and functionality
-    ```
+    7. Footer
+       - Multi-column layout
+       - Site navigation
+       - Contact information
+       - Social links
+       - Newsletter signup
+       - Copyright
+       - Legal links
 
     IMPORTANT:
-    - Reference the example template structure
+    - Reference modern website builder templates
     - Use semantic HTML5 elements
     - Implement all sections in order
     - Use Bootstrap 5 components
     - Follow accessibility best practices
+    - Include responsive images
+    - Add hover/interaction states
+    - Implement proper spacing
   expected_output: >
     ONLY INCLUDE The Three complete code sections:
     1. HTML section using Bootstrap V5 classes and components

@@ -4,6 +4,7 @@ import os
 import logging
 from .utils.cache_manager import CacheManager
 from .utils.template_manager import TemplateManager
+from .utils.output_handler import OutputHandler
 import yaml
 from pathlib import Path
 
@@ -32,6 +33,7 @@ class WebDevelopersCrew:
         self.template_manager = TemplateManager()
         self.logger = logging.getLogger(__name__)
         self.topic = None
+        self.output_handler = OutputHandler()
 
     def initialize_cache(self, topic: str):
         """Initialize cache with topic"""
@@ -195,61 +197,19 @@ class WebDevelopersCrew:
     def handle_development_output(self, output):
         """Handle the frontend development output"""
         try:
-            # Create output directory
-            output_dir = Path("output")
-            output_dir.mkdir(exist_ok=True)
+            # Parse sections
+            sections = self.output_handler.parse_sections(output)
 
-            # Initialize section collectors
-            sections = {"html": [], "css": [], "js": []}
-            current_section = None
+            # Write files using template manager
+            success = self.output_handler.write_files(
+                sections,
+                template_manager=self.template_manager,
+                theme=self.inputs.get("theme", "Books"),
+            )
 
-            # Parse output into sections
-            for line in str(output).split("\n"):
-                line_lower = line.lower().strip()
-
-                # Check for section markers
-                if "```html" in line_lower:
-                    current_section = "html"
-                    continue
-                elif "```css" in line_lower:
-                    current_section = "css"
-                    continue
-                elif "```javascript" in line_lower or "```js" in line_lower:
-                    current_section = "js"
-                    continue
-                elif "```" in line:
-                    current_section = None
-                    continue
-
-                # Add content to current section if we're in one
-                if current_section and line.strip():
-                    sections[current_section].append(line)
-
-            # Process HTML through template
-            if sections["html"]:
-                html_content = "\n".join(sections["html"])
-                # Get theme from cache or inputs
-                theme = self.inputs.get("theme", "Books")
-                # Process through template
-                processed_html = self.template_manager.process_html(
-                    html_content, title=f"{theme} Landing Page"
-                )
-                html_path = output_dir / "index.html"
-                html_path.write_text(processed_html)
-                logger.info(f"HTML written to {html_path}")
-
-            # Write other files
-            if sections["css"]:
-                css_path = output_dir / "style.css"
-                css_content = "\n".join(sections["css"])
-                css_path.write_text(css_content)
-                logger.info(f"CSS written to {css_path}")
-
-            if sections["js"]:
-                js_path = output_dir / "script.js"
-                js_content = "\n".join(sections["js"])
-                js_path.write_text(js_content)
-                logger.info(f"JavaScript written to {js_path}")
+            if not success:
+                logger.error("Failed to write output files")
+                return False
 
             return True
 
