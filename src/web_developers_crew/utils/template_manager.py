@@ -19,12 +19,16 @@ class TemplateManager:
         if "<body>" in html_content and "</body>" in html_content:
             start = html_content.find("<body>") + len("<body>")
             end = html_content.find("</body>")
-            body_content = html_content[start:end]
+            body_content = html_content[start:end].strip()
 
         # Get base template
         base_template = self.read_template("base.html")
 
-        # Replace placeholders
-        final_html = base_template.format(title=title, body=body_content)
+        # Replace placeholders with proper paths
+        final_html = (
+            base_template.format(title=title, body=body_content)
+            .replace('href="index.css"', 'href="style.css"')
+            .replace('src="index.js"', 'src="script.js"')
+        )
 
         return final_html

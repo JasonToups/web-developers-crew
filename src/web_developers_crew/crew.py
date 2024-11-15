@@ -225,13 +225,20 @@ class WebDevelopersCrew:
                 if current_section and line.strip():
                     sections[current_section].append(line)
 
-            # Write files
+            # Process HTML through template
             if sections["html"]:
-                html_path = output_dir / "index.html"
                 html_content = "\n".join(sections["html"])
-                html_path.write_text(html_content)
+                # Get theme from cache or inputs
+                theme = self.inputs.get("theme", "Books")
+                # Process through template
+                processed_html = self.template_manager.process_html(
+                    html_content, title=f"{theme} Landing Page"
+                )
+                html_path = output_dir / "index.html"
+                html_path.write_text(processed_html)
                 logger.info(f"HTML written to {html_path}")
 
+            # Write other files
             if sections["css"]:
                 css_path = output_dir / "style.css"
                 css_content = "\n".join(sections["css"])
